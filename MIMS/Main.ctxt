@@ -1,9 +1,13 @@
 #BlueJ class context
 comment0.target=Main
-comment1.params=
-comment1.target=Company\ registerCompany()
+comment1.params=data
+comment1.target=void\ bannerCompany(Company)
 comment2.params=
-comment2.target=Company\ verifyCompany()
-comment3.params=args
-comment3.target=void\ main(java.lang.String[])
-numComments=4
+comment2.target=void\ mainMenu()
+comment3.params=
+comment3.target=Company\ registerCompany()
+comment4.params=
+comment4.target=Company\ verifyCompany()
+comment5.params=args
+comment5.target=void\ main(java.lang.String[])
+numComments=6

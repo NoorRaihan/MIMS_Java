@@ -13,6 +13,54 @@ import java.util.Scanner;
 
 public class Main {
     
+    static void bannerCompany(Company data) {
+
+        System.out.println("███╗░░░███╗██╗███╗░░░███╗░██████╗");
+        System.out.println("████╗░████║██║████╗░████║██╔════╝");
+        System.out.println("██╔████╔██║██║██╔████╔██║╚█████╗░");
+        System.out.println("██║╚██╔╝██║██║██║╚██╔╝██║░╚═══██╗");
+        System.out.println("██║░╚═╝░██║██║██║░╚═╝░██║██████╔╝");
+        System.out.println("╚═╝░░░░░╚═╝╚═╝╚═╝░░░░░╚═╝╚═════╝░");
+        System.out.println("Manufacturing Inventory Management System");
+        System.out.println("Company Name  : " + data.getCompanyName());
+        System.out.println("Company Phone : " + data.getCompanyPhone());
+        
+    } 
+
+    static void mainMenu() {
+         //display main menu
+        Scanner in = new Scanner(System.in);
+        System.out.println("\n[1] Category Section");
+        System.out.println("[2] Product Section");
+        System.out.println("[3] Generate Report");
+
+        int choice;
+        boolean flag = true;
+        while(flag) {
+
+            System.out.print("Enter choice: ");
+            choice = Integer.parseInt(in.nextLine());
+            switch(choice) {
+                case 1:
+                    flag = false;
+                    //category menu here
+                    break;
+                case 2:
+                    flag = false;
+                    //product menu here
+                    break;
+                case 3:
+                    flag = false;
+                    //report menu here
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+        
+    }
+    
+
     static Company registerCompany() {
 
         String companyName,companyPhone,companyAddress,businessNumber;
@@ -44,7 +92,7 @@ public class Main {
         } catch (IOException ioe) {
             System.err.println("Something went wrong!");
         }
-        
+        System.out.print("\u000C"); 
         return compData;
     }
 
@@ -99,5 +147,7 @@ public class Main {
 
         //verify the user registered the company or not
         Company companyDetails = verifyCompany();
+        bannerCompany(companyDetails);
+        mainMenu();
     }
 }
