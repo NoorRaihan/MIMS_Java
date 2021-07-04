@@ -60,6 +60,7 @@ public class Main {
                 case 4:
                     flag = false;
                     //search product method here
+                    searchingProducts();
                     break;
                 case 99:
                     flag = false;
@@ -105,6 +106,7 @@ public class Main {
                 case 4:
                     flag = false;
                     //search category method here
+                    searchingCategories();
                     break;
                 case 99:
                     flag = false;
@@ -119,6 +121,7 @@ public class Main {
 
     static void mainMenu(Company data) {
          //display main menu
+        System.out.print("\u000C");
         bannerCompany(data);
         Scanner in = new Scanner(System.in);
         System.out.println("\n[1]  Category Section");
@@ -186,7 +189,7 @@ public class Main {
         choice = choicePicker(in.nextLine());
 
        if(choice) {
-           data.addCategory(); //do the add product job
+           data.add(); //do the add product job
        }else {
            addCategories(); //call this function itself 
        }
@@ -210,7 +213,7 @@ public class Main {
         while(catData == null) {
             System.out.print("Product Category ID [eg:AX119]: ");
             categoryID = in.nextLine();
-            catData = Category.searchCategory(categoryID);//find category name by id and get whole object
+            catData = Category.search(categoryID,null);//find category name by id and get whole object
             if(catData == null) {
                 System.out.println("Category ID not exist!");
             }
@@ -232,10 +235,50 @@ public class Main {
         choice = choicePicker(in.nextLine());
 
        if(choice) {
-           data.addProduct();//do the add product job
+           data.add();//do the add product job
        }else {
            addProducts();//call this function itself 
        }
+    }
+
+    static void searchingProducts() {
+        System.out.print("\u000C");
+        Scanner in = new Scanner(System.in);
+        String id;
+        System.out.println("--------------------SEARCH PRODUCT----------------------");
+        System.out.print("\nEnter Product ID [eg:AX119]: ");
+        id = in.nextLine();
+
+        Product [] data = Product.searchPro(id, null);
+
+        for(int i=0;i<data.length;i++){
+            if(data[i] == null) {
+                break;
+            } else {
+                System.out.println(data[i].toString());
+            }
+        }
+        // if(data != null) {
+        //     System.out.println(((Product)data).toString());
+        // } else {
+        //     System.out.println("Category not exist!");
+        // }
+    }
+
+    static void searchingCategories() { //search categories by inputting id
+        System.out.print("\u000C");
+        Scanner in = new Scanner(System.in);
+        String id;
+        System.out.println("--------------------SEARCH CATEGORY----------------------");
+        System.out.print("\nEnter Category ID [eg:AX119]: ");
+        id = in.nextLine();
+
+        Category data = Category.search(id,null);
+        if(data != null) {
+            System.out.println(data.toString());
+        } else {
+            System.out.println("Category not exist!");
+        }
     }
 
     static Company registerCompany() {
