@@ -168,32 +168,6 @@ public class Main {
         return flag;
     }
 
-    static Category searchCategory(String id) { //to search and return category name
-        
-        Category dat = null;
-        try {
-            BufferedReader in = new BufferedReader(new FileReader("category.txt"));
-            String data = in.readLine();
-
-            while(data != null) {
-                StringTokenizer inputs = new StringTokenizer(data, ";");
-
-                String catID =  inputs.nextToken();
-                String catName = inputs.nextToken();
-
-                if(catID.equalsIgnoreCase(id)) {
-                    dat = new Category(id,catName);
-                    break;
-                }
-                data = in.readLine();
-            }
-            in.close();
-        }catch (IOException ioe) {
-            System.err.println("Something went wrong!\n" + ioe);
-        }
-        return dat;
-    }
-
     static void addCategories() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
@@ -236,7 +210,7 @@ public class Main {
         while(catData == null) {
             System.out.print("Product Category ID [eg:AX119]: ");
             categoryID = in.nextLine();
-            catData = searchCategory(categoryID);//find category name by id and get whole object
+            catData = Category.searchCategory(categoryID);//find category name by id and get whole object
             if(catData == null) {
                 System.out.println("Category ID not exist!");
             }
