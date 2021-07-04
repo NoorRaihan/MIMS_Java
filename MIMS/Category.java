@@ -32,6 +32,60 @@ public class Category {
     // public String getUpdateDate() {return updateDate;}
 
     //process
+    public boolean checkExist(String ID) {
+        boolean flag = false;
+
+        File chkfile = new File("category.txt");
+        boolean exists = chkfile.exists();
+
+        if(exists) {
+
+            try {
+                BufferedReader in = new BufferedReader(new FileReader("category.txt"));
+                String data = in.readLine();
+    
+                while(data != null) {
+                    StringTokenizer inputs = new StringTokenizer(data, ";");
+                    String  tempID = inputs.nextToken();
+    
+                    if(tempID.equalsIgnoreCase(ID)) {
+                        flag = true;
+                        break;
+                    } else {
+                        flag = false;
+                    }
+                    data = in.readLine();
+                }
+                in.close();
+            } catch (IOException ioe) {
+                System.err.println("Something went wrong!" +ioe);
+            }
+        } else {
+            System.out.println("executeeee"); //debugggg
+            flag = false;
+        }
+        
+        return flag;
+    }
+
+    public void addCategory() {
+        boolean exist = checkExist(categoryID);
+
+        if(exist) {
+            System.out.println("Category already existed!");
+        } else {
+            try {
+                PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter("category.txt",true)));
+
+                add.println(categoryID + ";" + categoryName);
+                add.close();
+
+            }catch (IOException ioe) {
+                System.err.println("Something went wrong\n" + ioe);
+            }
+        }
+    }
+
     public int calcQuantity(int month) {
 
         int quantity = 0;

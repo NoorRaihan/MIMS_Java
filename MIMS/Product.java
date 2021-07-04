@@ -43,7 +43,6 @@ public class Product extends Category {
         boolean flag = false;
         try {
             BufferedReader inpt = new BufferedReader(new FileReader("product.txt"));
-            
             String data = inpt.readLine();
             
             while(data != null) {
@@ -52,9 +51,12 @@ public class Product extends Category {
 
                 if(tempID.equalsIgnoreCase(ID)) {
                     flag = true;
+                    break;
                 } else {
                     flag = false;
                 }
+                
+                data = inpt.readLine();
             }
             inpt.close();
         } catch (IOException ioe) {
@@ -70,18 +72,18 @@ public class Product extends Category {
         boolean exist = checkExist(productID);
 
         if(exist) {
-
+            System.out.println("Product already existed! \nPlease update the product instead!");
+        } else {
             try {
                 PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter("product.txt",true)));
-                
-                add.println(productID + ";" + productName + ";" + productQuantity + ";" + super.getCategoryName() + ";" + updateDate);
 
+                add.println(productID + ";" + productName + ";" + productQuantity + ";" + super.getCategoryName() + ";" + updateDate);
                 add.close();
+
             } catch (IOException ioe) {
-                System.err.println("Something went wrong!");
+                System.err.println("Something went wrong!\n" + ioe);
             }
-        } else {
-            System.out.println("Product already existed! \nPlease update the product instead!");
+            
         }
     }
 }
