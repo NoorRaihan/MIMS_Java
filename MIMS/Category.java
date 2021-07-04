@@ -68,7 +68,7 @@ public class Category {
         return flag;
     }
 
-    public void addCategory() {
+    public void add() {
         boolean exist = checkExist(categoryID);
 
         if(exist) {
@@ -118,7 +118,7 @@ public class Category {
         return quantity;
     }
 
-    static Category searchCategory(String id) { //to search and return category name
+    static Category search(String id, String name) { //to search and return category name
         
         Category dat = null;
         try {
@@ -131,8 +131,8 @@ public class Category {
                 String catID =  inputs.nextToken();
                 String catName = inputs.nextToken();
 
-                if(catID.equalsIgnoreCase(id)) {
-                    dat = new Category(id,catName);
+                if(catID.equalsIgnoreCase(id) || catName.equalsIgnoreCase(name)) {
+                    dat = new Category(catID,catName);
                     break;
                 }
                 data = in.readLine();
@@ -142,5 +142,9 @@ public class Category {
             System.err.println("Something went wrong!\n" + ioe);
         }
         return dat;
+    }
+
+    public String toString() {
+        return "\nCategory ID: " + categoryID + "\nCategory Name: " + categoryName;
     }
 }

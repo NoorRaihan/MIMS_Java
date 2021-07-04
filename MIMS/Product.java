@@ -75,7 +75,7 @@ public class Product extends Category {
     
     }
 
-    public void addProduct() { //add new Product to the product.txt
+    public void add() { //add new Product to the product.txt
 
         //check if product exist or not
         boolean exist = checkExist(productID);
@@ -86,7 +86,7 @@ public class Product extends Category {
             try {
                 PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter("product.txt",true)));
 
-                add.println(productID + ";" + productName + ";" + productQuantity + ";" + super.getCategoryName() + ";" + updateDate);
+                add.println(productID + ";" + productName + ";" + productQuantity + ";" + bulkValue + ";" +super.getCategoryName() + ";" + updateDate);
                 add.close();
 
             } catch (IOException ioe) {
@@ -94,5 +94,43 @@ public class Product extends Category {
             }
             
         }
+    }
+
+    static Product [] searchPro(String id,String pname) {
+
+        Product [] dat = new Product[9999];//array size let it bigger...
+        String pid,name,category,date;
+        int quantity,bulkvalue,i = 0;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("product.txt"));
+            String data = in.readLine();
+
+            while(data != null) {
+                StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                pid = inputs.nextToken();
+                name = inputs.nextToken();
+                quantity = Integer.parseInt(inputs.nextToken());
+                bulkvalue = Integer.parseInt(inputs.nextToken());
+                category = inputs.nextToken();
+                date = inputs.nextToken();
+                //find category id
+                Category catID = Category.search(null, category);
+
+                if(pid.equalsIgnoreCase(id) || name.equalsIgnoreCase(pname)) {
+                    dat[i] = new Product(catID.getCategoryID(),category,pid,name,quantity,bulkvalue,date);
+                    i++;
+                }
+                data = in.readLine();
+            }
+            in.close();
+        }catch (IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe);
+        }
+        return dat;
+    }
+
+    public String toString() {
+        return super.toString() + "\nProduct ID: " + productID + "\nProduct Name: " + productName + "\nProduct Quantity: " + productQuantity + "\nUpdate Date: " + updateDate + "\n";
     }
 }
