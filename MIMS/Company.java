@@ -17,7 +17,7 @@ public class Company {
     public Company(String companyName, String companyPhone, String companyAddress, String businessNumber) {
         
         this.companyName = companyName;
-        this.companyPhone = companyAddress;
+        this.companyPhone = companyPhone;
         this.companyAddress = companyAddress;
         this.businessNumber = businessNumber;
 

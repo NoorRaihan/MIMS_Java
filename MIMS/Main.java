@@ -13,6 +13,205 @@ import java.util.Scanner;
 
 public class Main {
     
+    static void bannerCompany(Company data) {
+
+        System.out.println("███╗░░░███╗██╗███╗░░░███╗░██████╗");
+        System.out.println("████╗░████║██║████╗░████║██╔════╝");
+        System.out.println("██╔████╔██║██║██╔████╔██║╚█████╗░");
+        System.out.println("██║╚██╔╝██║██║██║╚██╔╝██║░╚═══██╗");
+        System.out.println("██║░╚═╝░██║██║██║░╚═╝░██║██████╔╝");
+        System.out.println("╚═╝░░░░░╚═╝╚═╝╚═╝░░░░░╚═╝╚═════╝░");
+        System.out.println("Manufacturing Inventory Management System");
+        System.out.println("Company Name  : " + data.getCompanyName());
+        System.out.println("Company Phone : " + data.getCompanyPhone());
+        
+    }
+    
+    static void categoryMenu(Company data) {
+        System.out.print("\u000C");
+        bannerCompany(data);
+        Scanner in = new Scanner(System.in);
+        System.out.println("\n[1]  Add Category");
+        System.out.println("[2]  Delete Category");
+        System.out.println("[3]  Update Category");
+        System.out.println("[4]  Search Category");
+        System.out.println("[99] Back to Main Menu");
+
+        int choice;
+        boolean flag = true;
+        while(flag) {
+
+            System.out.print("Enter choice: ");
+            choice = Integer.parseInt(in.nextLine());
+            switch(choice) {
+                case 1:
+                    flag = false;
+                    //add category method here
+                    addCategories();
+                    break;
+                case 2:
+                    flag = false;
+                    //delete category method here
+                    break;
+                case 3:
+                    flag = false;
+                    //update category method here
+                    break;
+                case 4:
+                    flag = false;
+                    //search category method here
+                    break;
+                case 99:
+                    flag = false;
+                    mainMenu(data);
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+        
+    }
+
+    static void mainMenu(Company data) {
+         //display main menu
+        bannerCompany(data);
+        Scanner in = new Scanner(System.in);
+        System.out.println("\n[1]  Category Section");
+        System.out.println("[2]  Product Section");
+        System.out.println("[3]  Generate Report");
+        System.out.println("[99] Exit Program");
+
+        int choice;
+        boolean flag = true;
+        while(flag) {
+
+            System.out.print("Enter choice: ");
+            choice = Integer.parseInt(in.nextLine());
+            switch(choice) {
+                case 1:
+                    flag = false;
+                    //category menu here
+                    categoryMenu(data);
+                    break;
+                case 2:
+                    flag = false;
+                    //product menu here
+                    break;
+                case 3:
+                    flag = false;
+                    //report menu here
+                    break;
+                case 99:
+                    flag = false;
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+        
+    }
+
+    static boolean choicePicker(String choice) { //return true or false depends on the choice yes or no
+        boolean flag = false;
+
+        if(choice.equalsIgnoreCase("yes")) {
+            flag = true;
+        } else {
+            flag = false;
+        }
+        return flag;
+    }
+
+    static Category searchCategory(String id) { //to search and return category name
+        
+        Category dat = null;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("category.txt"));
+            String data = in.readLine();
+
+            while(data != null) {
+                StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                String catID =  inputs.nextToken();
+                String catName = inputs.nextToken();
+
+                if(catID.equalsIgnoreCase(id)) {
+                    dat = new Category(id,catName);
+                    break;
+                }
+
+                in.readLine();
+            }
+        }catch (IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe);
+        }
+        return dat;
+    }
+
+    static void addCategories() {
+        System.out.print("\u000C");//to clear the terminal :) 
+        Scanner in = new Scanner(System.in);
+        String id,name;
+        boolean choice;
+
+        System.out.println("--------------ADD CATEGORY---------------");
+        System.out.print("\nCategory ID: ");
+        id = in.nextLine();
+
+        System.out.print("Category Name: ");
+        name = in.nextLine();
+
+        Category data = new Category(id,name);
+        System.out.print("Are you confirm [yes/no]: ");
+        choice = choicePicker(in.nextLine());
+
+       if(choice) {
+           data.addCategory(); //do the add product job
+       }else {
+           addCategories(); //call this function itself 
+       }
+    }
+
+    static void addProducts() {
+        System.out.print("\u000C");//to clear the terminal :) 
+        Scanner in = new Scanner(System.in);
+        String id,name,updateDate,categoryID;
+        boolean choice;
+        int quantity,bulkValue;
+        Category catData;
+
+        System.out.println("--------------ADD PRODUCT---------------");
+        System.out.print("\nProduct ID: ");
+        id = in.nextLine();
+
+        System.out.print("Product Name: ");
+        name = in.nextLine();
+
+        System.out.print("Product Category ID [eg:AX119]: ");
+        categoryID = in.nextLine();
+        catData = searchCategory(categoryID);//find category name by id and get whole object
+
+        System.out.print("Product Initial Quantity: ");
+        quantity = Integer.parseInt(in.nextLine());
+
+        System.out.print("Product bulk value: ");
+        bulkValue = Integer.parseInt(in.nextLine());
+
+        System.out.print("Insertion Date [eg: 21/1/2020]: ");
+        updateDate = in.nextLine();
+
+        Product data = new Product(categoryID,catData.getCategoryName(),id,name,quantity,bulkValue,updateDate);
+
+        System.out.print("Are you confirm [yes/no]: ");
+        choice = choicePicker(in.nextLine());
+
+       if(choice) {
+           data.addProduct();//do the add product job
+       }else {
+           addProducts();//call this function itself 
+       }
+    }
+
     static Company registerCompany() {
 
         String companyName,companyPhone,companyAddress,businessNumber;
@@ -44,7 +243,7 @@ public class Main {
         } catch (IOException ioe) {
             System.err.println("Something went wrong!");
         }
-        
+        System.out.print("\u000C");//to clear the terminal :) 
         return compData;
     }
 
@@ -99,5 +298,6 @@ public class Main {
 
         //verify the user registered the company or not
         Company companyDetails = verifyCompany();
+        mainMenu(companyDetails);
     }
 }
