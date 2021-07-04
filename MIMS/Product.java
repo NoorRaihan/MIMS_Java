@@ -41,27 +41,36 @@ public class Product extends Category {
     //process
     public boolean checkExist(String ID) { //check if product exist or not
         boolean flag = false;
-        try {
-            BufferedReader inpt = new BufferedReader(new FileReader("product.txt"));
-            String data = inpt.readLine();
-            
-            while(data != null) {
-                StringTokenizer inputs = new StringTokenizer(data,";");
-                String tempID = inputs.nextToken();
 
-                if(tempID.equalsIgnoreCase(ID)) {
-                    flag = true;
-                    break;
-                } else {
-                    flag = false;
-                }
+        File chkfile = new File("product.txt");
+        boolean exists = chkfile.exists();
+
+        if(exists) {
+            try {
+                BufferedReader inpt = new BufferedReader(new FileReader("product.txt"));
+                String data = inpt.readLine();
                 
-                data = inpt.readLine();
+                while(data != null) {
+                    StringTokenizer inputs = new StringTokenizer(data,";");
+                    String tempID = inputs.nextToken();
+    
+                    if(tempID.equalsIgnoreCase(ID)) {
+                        flag = true;
+                        break;
+                    } else {
+                        flag = false;
+                    }
+                    
+                    data = inpt.readLine();
+                }
+                inpt.close();
+            } catch (IOException ioe) {
+                System.err.println("Something went wrong!");
             }
-            inpt.close();
-        } catch (IOException ioe) {
-            System.err.println("Something went wrong!");
+        } else {
+            flag = false;
         }
+        
         return flag;
     
     }

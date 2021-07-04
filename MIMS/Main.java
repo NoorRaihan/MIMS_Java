@@ -26,6 +26,51 @@ public class Main {
         System.out.println("Company Phone : " + data.getCompanyPhone());
         
     }
+
+    static void productMenu(Company data) {
+        System.out.print("\u000C");
+        bannerCompany(data);
+        Scanner in = new Scanner(System.in);
+        System.out.println("\n[1]  Add Product");
+        System.out.println("[2]  Delete Product");
+        System.out.println("[3]  Update Product");
+        System.out.println("[4]  Search Product");
+        System.out.println("[99] Back to Main Menu");
+
+        int choice;
+        boolean flag = true;
+        while(flag) {
+
+            System.out.print("Enter choice: ");
+            choice = Integer.parseInt(in.nextLine());
+            switch(choice) {
+                case 1:
+                    flag = false;
+                    //add product method here
+                    addProducts();
+                    break;
+                case 2:
+                    flag = false;
+                    //delete product method here
+                    break;
+                case 3:
+                    flag = false;
+                    //update product method here
+                    break;
+                case 4:
+                    flag = false;
+                    //search product method here
+                    break;
+                case 99:
+                    flag = false;
+                    mainMenu(data);
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+        
+    }
     
     static void categoryMenu(Company data) {
         System.out.print("\u000C");
@@ -96,6 +141,7 @@ public class Main {
                 case 2:
                     flag = false;
                     //product menu here
+                    productMenu(data);
                     break;
                 case 3:
                     flag = false;
@@ -139,9 +185,9 @@ public class Main {
                     dat = new Category(id,catName);
                     break;
                 }
-
-                in.readLine();
+                data = in.readLine();
             }
+            in.close();
         }catch (IOException ioe) {
             System.err.println("Something went wrong!\n" + ioe);
         }
@@ -175,10 +221,10 @@ public class Main {
     static void addProducts() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
-        String id,name,updateDate,categoryID;
+        String id,name,updateDate,categoryID = null;
         boolean choice;
         int quantity,bulkValue;
-        Category catData;
+        Category catData = null;
 
         System.out.println("--------------ADD PRODUCT---------------");
         System.out.print("\nProduct ID: ");
@@ -187,9 +233,15 @@ public class Main {
         System.out.print("Product Name: ");
         name = in.nextLine();
 
-        System.out.print("Product Category ID [eg:AX119]: ");
-        categoryID = in.nextLine();
-        catData = searchCategory(categoryID);//find category name by id and get whole object
+        while(catData == null) {
+            System.out.print("Product Category ID [eg:AX119]: ");
+            categoryID = in.nextLine();
+            catData = searchCategory(categoryID);//find category name by id and get whole object
+            if(catData == null) {
+                System.out.println("Category ID not exist!");
+            }
+        }
+    
 
         System.out.print("Product Initial Quantity: ");
         quantity = Integer.parseInt(in.nextLine());
