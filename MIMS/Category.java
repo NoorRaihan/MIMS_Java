@@ -117,4 +117,30 @@ public class Category {
         }
         return quantity;
     }
+
+    static Category searchCategory(String id) { //to search and return category name
+        
+        Category dat = null;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("category.txt"));
+            String data = in.readLine();
+
+            while(data != null) {
+                StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                String catID =  inputs.nextToken();
+                String catName = inputs.nextToken();
+
+                if(catID.equalsIgnoreCase(id)) {
+                    dat = new Category(id,catName);
+                    break;
+                }
+                data = in.readLine();
+            }
+            in.close();
+        }catch (IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe);
+        }
+        return dat;
+    }
 }
