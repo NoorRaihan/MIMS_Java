@@ -57,6 +57,7 @@ public class Main {
                 case 3:
                     flag = false;
                     //update product method here
+                    updateProducts();
                     break;
                 case 4:
                     flag = false;
@@ -104,6 +105,7 @@ public class Main {
                 case 3:
                     flag = false;
                     //update category method here
+                    updateCategories();
                     break;
                 case 4:
                     flag = false;
@@ -173,6 +175,16 @@ public class Main {
         return flag;
     }
 
+    static int checkLength(Object [] array) { //this one for checking actual length of array
+        int count = 0;
+        for(Object myobj : array) { //using for-loop for code optimizinggggg and simple wohoo
+            if(myobj != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     static void addCategories() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
@@ -215,6 +227,37 @@ public class Main {
        }else {
            deleteCategories(); //call this function itself 
        }
+    }
+
+    static void updateCategories() {
+        System.out.print("\u000C");//to clear the terminal :) 
+        Scanner in = new Scanner(System.in);
+        String id,name;
+        boolean choice;
+
+        System.out.println("--------------EDIT CATEGORY---------------");
+        System.out.print("\nCategory ID: ");
+        id = in.nextLine();
+
+        boolean exists = Category.checkExist(id);
+
+        if(exists) {
+            System.out.print("New Category Name: ");
+            name = in.nextLine();
+            
+            System.out.print("Are you confirm [yes/no]: ");
+            choice = choicePicker(in.nextLine());
+
+            if(choice) {
+                Category newData = new Category(id,name);
+                newData.update();//do the update category job
+            }else {
+                updateCategories();//call this function itself 
+            }
+
+        } else {
+            System.out.println("Category ID not found!");
+        }
     }
 
     static void addProducts() {
@@ -284,6 +327,35 @@ public class Main {
        }
     }
 
+    static void updateProducts() {
+        System.out.print("\u000C");//to clear the terminal :)
+        Scanner in = new Scanner(System.in);
+        String id,updatedate;
+        int quantity;
+
+        System.out.println("--------------UPDATE PRODUCT STOCKS---------------");
+        System.out.print("\nProduct ID: ");
+        id = in.nextLine();
+
+        Product [] data = Product.searchPro(id, null);
+        int length = checkLength(data);
+        int arrLatest = length-1;
+        if(length > 0) {
+            System.out.print("Quantity: ");
+            quantity = Integer.parseInt(in.nextLine());
+
+            System.out.print("Insertion Date [eg:12/7/2021]: ");
+            updatedate = in.nextLine();
+
+            int actQuantity = quantity + data[arrLatest].getProductQuantity();
+
+            Product newData = new Product(data[arrLatest].getCategoryID(),data[arrLatest].getCategoryName(),id,data[arrLatest].getProductName(),actQuantity,data[arrLatest].getBulkValue(),updatedate);
+            newData.update();//add the update stocks
+        } else {
+            System.out.println("Product ID not found!");
+        }
+    }
+
     static void searchingProducts() {
         System.out.print("\u000C");
         Scanner in = new Scanner(System.in);
@@ -293,19 +365,19 @@ public class Main {
         id = in.nextLine();
 
         Product [] data = Product.searchPro(id, null);
-
-        for(int i=0;i<data.length;i++){
-            if(data[i] == null) {
-                break;
-            } else {
-                System.out.println(data[i].toString());
+        // System.out.println(checkLength(data)); //for debugging purpose =>show how many result
+        int length = checkLength(data);
+        if(length > 0) {
+            for(int i=0;i<length;i++){
+                if(data[i] == null) {
+                    break;
+                } else {
+                    System.out.println(data[i].toString());
+                }
             }
+        } else {
+            System.out.println("Product does not exist!");
         }
-        // if(data != null) {
-        //     System.out.println(((Product)data).toString());
-        // } else {
-        //     System.out.println("Category not exist!");
-        // }
     }
 
     static void searchingCategories() { //search categories by inputting id

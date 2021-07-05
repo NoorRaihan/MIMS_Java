@@ -81,12 +81,12 @@ public class Product extends Category {
         boolean exist = checkExist(productID);
 
         if(exist) {
-            System.out.println("Product already existed! \nPlease update the product instead!");
+            System.out.println("Product ID not found!");
         } else {
             try {
                 PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter("product.txt",true)));
 
-                add.println(productID + ";" + productName + ";" + productQuantity + ";" + bulkValue + ";" +super.getCategoryName() + ";" + updateDate);
+                add.println(productID + ";" + productName + ";" + productQuantity + ";" + bulkValue + ";" +super.getCategoryID() + ";" + updateDate);
                 add.close();
 
             } catch (IOException ioe) {
@@ -94,6 +94,27 @@ public class Product extends Category {
             }
             
         }
+    }
+
+    public void update() {
+         //check if product exist or not
+         boolean exist = checkExist(productID);
+
+         if(!exist) {
+             System.out.println("Product does not exist!");
+         } else {
+             try {
+                 PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter("product.txt",true)));
+ 
+                 add.println(productID + ";" + productName + ";" + productQuantity + ";" + bulkValue + ";" +super.getCategoryID() + ";" + updateDate);
+                 add.close();
+                 System.out.println("Product stock update successfully!");
+ 
+             } catch (IOException ioe) {
+                 System.err.println("Something went wrong!\n" + ioe);
+             }
+             
+         }
     }
 
     static void delete(String id) {
@@ -165,10 +186,10 @@ public class Product extends Category {
                 category = inputs.nextToken();
                 date = inputs.nextToken();
                 //find category id
-                Category catID = Category.search(null, category);
+                Category catName = Category.search(category, null);
 
                 if(pid.equalsIgnoreCase(id) || name.equalsIgnoreCase(pname)) {
-                    dat[i] = new Product(catID.getCategoryID(),category,pid,name,quantity,bulkvalue,date);
+                    dat[i] = new Product(category,catName.getCategoryName(),pid,name,quantity,bulkvalue,date);
                     i++;
                 }
                 data = in.readLine();
