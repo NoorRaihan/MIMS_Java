@@ -39,7 +39,7 @@ public class Product extends Category {
     public int getBulkValue() {return bulkValue;}
 
     //process
-    public boolean checkExist(String ID) { //check if product exist or not
+    static boolean checkExist(String ID) { //check if product exist or not
         boolean flag = false;
 
         File chkfile = new File("product.txt");
@@ -95,6 +95,8 @@ public class Product extends Category {
             
         }
     }
+
+
 
     static Product [] searchPro(String id,String pname) {
 

@@ -32,7 +32,7 @@ public class Category {
     // public String getUpdateDate() {return updateDate;}
 
     //process
-    public boolean checkExist(String ID) {
+    static boolean checkExist(String ID) {
         boolean flag = false;
 
         File chkfile = new File("category.txt");
@@ -83,6 +83,50 @@ public class Category {
             }catch (IOException ioe) {
                 System.err.println("Something went wrong\n" + ioe);
             }
+        }
+    }
+
+    static void delete(String id) {
+        boolean exist = checkExist(id);
+        String catID,catName;
+        String temp = "temp.txt";
+        String ori = "category.txt";
+        File tempFile = new File(temp);
+        File oriFile = new File(ori);
+
+        if(exist) {
+            
+            try {
+                PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter(temp))); //create a temp file
+
+                BufferedReader in = new BufferedReader(new FileReader(ori)); //read the category file
+                String data = in.readLine();
+
+                while(data != null) {
+                    StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                    catID = inputs.nextToken();
+                    catName = inputs.nextToken();
+
+                    if(!catID.equalsIgnoreCase(id)) {
+                        add.println(catID + ";" + catName);
+                    }
+
+                    data = in.readLine();
+                }
+                in.close();
+                add.flush();
+                add.close();
+
+                oriFile.delete(); //delete the original file
+                File newFile = new File(ori);
+                tempFile.renameTo(newFile); //rename the file
+
+            }catch (IOException ioe) {
+                System.err.println("Something went wrong!\n" + ioe);
+            }
+        } else {
+            System.out.println("Category does not exist!");
         }
     }
 

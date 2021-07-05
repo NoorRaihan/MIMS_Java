@@ -98,6 +98,7 @@ public class Main {
                 case 2:
                     flag = false;
                     //delete category method here
+                    deleteCategories();
                     break;
                 case 3:
                     flag = false;
@@ -192,6 +193,26 @@ public class Main {
            data.add(); //do the add product job
        }else {
            addCategories(); //call this function itself 
+       }
+    }
+
+    static void deleteCategories() {
+        System.out.print("\u000C");//to clear the terminal :) 
+        Scanner in = new Scanner(System.in);
+        String id;
+        boolean choice;
+
+        System.out.println("--------------DELETE CATEGORY---------------");
+        System.out.print("\nCategory ID: ");
+        id = in.nextLine();
+
+        System.out.print("Are you confirm [yes/no]: ");
+        choice = choicePicker(in.nextLine());
+
+       if(choice) {
+            Category.delete(id); //do the delete process; //do the add product job
+       }else {
+           deleteCategories(); //call this function itself 
        }
     }
 
