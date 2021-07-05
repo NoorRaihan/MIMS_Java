@@ -130,6 +130,52 @@ public class Category {
         }
     }
 
+    public void update() {
+        boolean exist = checkExist(categoryID);
+        String catID,catName;
+        String temp = "temp.txt";
+        String ori = "category.txt";
+        File tempFile = new File(temp);
+        File oriFile = new File(ori);
+        if(!exist) {
+            System.out.println("Category ID not found!");
+        } else {
+
+            try {
+            PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter(temp))); //create a temp file
+
+                BufferedReader in = new BufferedReader(new FileReader(ori)); //read the category file
+                String data = in.readLine();
+
+                while(data != null) {
+                    StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                    catID = inputs.nextToken();
+                    catName = inputs.nextToken();
+
+                    if(catID.equalsIgnoreCase(categoryID)) {
+                        add.println(catID + ";" + categoryName);
+                    } else {
+                        add.println(catID + ";" + catName);
+                    }
+
+                    data = in.readLine();
+                }
+                in.close();
+                add.flush();
+                add.close();
+
+                oriFile.delete(); //delete the original file
+                File newFile = new File(ori);
+                tempFile.renameTo(newFile); //rename the file
+                System.out.println("Category successfully updated!");
+
+            }catch (IOException ioe) {
+                System.err.println("Something went wrong\n" + ioe);
+            }
+        }
+    }
+
     public int calcQuantity(int month) {
 
         int quantity = 0;

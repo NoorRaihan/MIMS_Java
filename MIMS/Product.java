@@ -81,12 +81,12 @@ public class Product extends Category {
         boolean exist = checkExist(productID);
 
         if(exist) {
-            System.out.println("Product already existed! \nPlease update the product instead!");
+            System.out.println("Product ID not found!");
         } else {
             try {
                 PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter("product.txt",true)));
 
-                add.println(productID + ";" + productName + ";" + productQuantity + ";" + bulkValue + ";" +super.getCategoryName() + ";" + updateDate);
+                add.println(productID + ";" + productName + ";" + productQuantity + ";" + bulkValue + ";" +super.getCategoryID() + ";" + updateDate);
                 add.close();
 
             } catch (IOException ioe) {
@@ -96,7 +96,76 @@ public class Product extends Category {
         }
     }
 
+    public void update() {
+         //check if product exist or not
+         boolean exist = checkExist(productID);
 
+         if(!exist) {
+             System.out.println("Product does not exist!");
+         } else {
+             try {
+                 PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter("product.txt",true)));
+ 
+                 add.println(productID + ";" + productName + ";" + productQuantity + ";" + bulkValue + ";" +super.getCategoryID() + ";" + updateDate);
+                 add.close();
+                 System.out.println("Product stock update successfully!");
+ 
+             } catch (IOException ioe) {
+                 System.err.println("Something went wrong!\n" + ioe);
+             }
+             
+         }
+    }
+
+    static void delete(String id) {
+        boolean exist = checkExist(id);
+        String pid,pname,pcategory,pupdate;
+        int pquantity,pbulk;
+        String temp = "temp.txt";
+        String ori = "product.txt";
+        File tempFile = new File(temp);
+        File oriFile = new File(ori);
+
+        if(exist) {
+            
+            try {
+                PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter(temp))); //create a temp file
+
+                BufferedReader in = new BufferedReader(new FileReader(ori)); //read the category file
+                String data = in.readLine();
+
+                while(data != null) {
+                    StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                    pid = inputs.nextToken();
+                    pname = inputs.nextToken();
+                    pquantity = Integer.parseInt(inputs.nextToken());
+                    pbulk = Integer.parseInt(inputs.nextToken());
+                    pcategory = inputs.nextToken();
+                    pupdate = inputs.nextToken();
+
+                    if(!pid.equalsIgnoreCase(id)) {
+                        add.println(pid + ";" + pname + ";" + pquantity + ";" + pbulk + ";" + pcategory + ";" + pupdate);
+                    }
+
+                    data = in.readLine();
+                }
+                in.close();
+                add.flush();
+                add.close();
+
+                oriFile.delete(); //delete the original file
+                File newFile = new File(ori);
+                tempFile.renameTo(newFile); //rename the file
+
+            }catch (IOException ioe) {
+                System.err.println("Something went wrong!\n" + ioe);
+            }
+        } else {
+            System.out.println("Category does not exist!");
+        }
+
+    }
 
     static Product [] searchPro(String id,String pname) {
 
@@ -117,10 +186,10 @@ public class Product extends Category {
                 category = inputs.nextToken();
                 date = inputs.nextToken();
                 //find category id
-                Category catID = Category.search(null, category);
+                Category catName = Category.search(category, null);
 
                 if(pid.equalsIgnoreCase(id) || name.equalsIgnoreCase(pname)) {
-                    dat[i] = new Product(catID.getCategoryID(),category,pid,name,quantity,bulkvalue,date);
+                    dat[i] = new Product(category,catName.getCategoryName(),pid,name,quantity,bulkvalue,date);
                     i++;
                 }
                 data = in.readLine();
