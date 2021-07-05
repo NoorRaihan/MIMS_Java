@@ -96,7 +96,55 @@ public class Product extends Category {
         }
     }
 
+    static void delete(String id) {
+        boolean exist = checkExist(id);
+        String pid,pname,pcategory,pupdate;
+        int pquantity,pbulk;
+        String temp = "temp.txt";
+        String ori = "product.txt";
+        File tempFile = new File(temp);
+        File oriFile = new File(ori);
 
+        if(exist) {
+            
+            try {
+                PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter(temp))); //create a temp file
+
+                BufferedReader in = new BufferedReader(new FileReader(ori)); //read the category file
+                String data = in.readLine();
+
+                while(data != null) {
+                    StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                    pid = inputs.nextToken();
+                    pname = inputs.nextToken();
+                    pquantity = Integer.parseInt(inputs.nextToken());
+                    pbulk = Integer.parseInt(inputs.nextToken());
+                    pcategory = inputs.nextToken();
+                    pupdate = inputs.nextToken();
+
+                    if(!pid.equalsIgnoreCase(id)) {
+                        add.println(pid + ";" + pname + ";" + pquantity + ";" + pbulk + ";" + pcategory + ";" + pupdate);
+                    }
+
+                    data = in.readLine();
+                }
+                in.close();
+                add.flush();
+                add.close();
+
+                oriFile.delete(); //delete the original file
+                File newFile = new File(ori);
+                tempFile.renameTo(newFile); //rename the file
+
+            }catch (IOException ioe) {
+                System.err.println("Something went wrong!\n" + ioe);
+            }
+        } else {
+            System.out.println("Category does not exist!");
+        }
+
+    }
 
     static Product [] searchPro(String id,String pname) {
 

@@ -52,6 +52,7 @@ public class Main {
                 case 2:
                     flag = false;
                     //delete product method here
+                    deleteProducts();
                     break;
                 case 3:
                     flag = false;
@@ -259,6 +260,27 @@ public class Main {
            data.add();//do the add product job
        }else {
            addProducts();//call this function itself 
+       }
+    }
+
+    static void deleteProducts() {
+        System.out.print("\u000C");//to clear the terminal :) 
+        Scanner in = new Scanner(System.in);
+        String id;
+        boolean choice;
+
+        System.out.println("--------------DELETE PRODUCT---------------");
+        System.out.print("\nProduct ID: ");
+        id = in.nextLine();
+
+        System.out.println("[WARNING] : It will delete all the product records!");
+        System.out.print("Are you confirm [yes/no]: ");
+        choice = choicePicker(in.nextLine());
+
+       if(choice) {
+            Product.delete(id); //do the delete process; //do the add product job
+       }else {
+           deleteProducts(); //call this function itself 
        }
     }
 
