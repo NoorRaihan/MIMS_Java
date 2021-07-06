@@ -176,7 +176,7 @@ public class Category {
         }
     }
 
-    public int calcQuantity(int month) {
+    public int calcQuantity(int month,int year) {
 
         int quantity = 0;
 
@@ -190,17 +190,31 @@ public class Category {
                 String productID = inputs.nextToken();
                 String productName = inputs.nextToken();
                 int productQuantity = Integer.parseInt(inputs.nextToken());
+                int pstocks = Integer.parseInt(inputs.nextToken());
+                int bulkValue = Integer.parseInt(inputs.nextToken());
                 String category = inputs.nextToken();
                 String date = inputs.nextToken();
                 
-                String [] parts = date.split("/",3);
-                int mm = Integer.parseInt(parts[1]); 
                 
-                if(category.equalsIgnoreCase(categoryName) && mm == month) {
-                    quantity += productQuantity;
-                }
-                in.close();
+                String [] parts = date.split("/",3);
+                int mm = Integer.parseInt(parts[1]);
+                int yy = Integer.parseInt(parts[2]);
+                // System.out.println(mm+"//"+yy); //debug purpose show the split result
+                if(category.equalsIgnoreCase(categoryID) && yy == year) {
+
+                    if(month == 0) {
+                        quantity += productQuantity;
+                    } else {
+
+                        if(mm == month) {
+                            quantity += productQuantity;
+                        }
+                    }
+                    
+                } 
+                data = in.readLine();
             }
+            in.close();
 
         } catch (IOException ioe) {
             System.err.println("Something went wrong!");

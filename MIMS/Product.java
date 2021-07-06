@@ -7,20 +7,22 @@ public class Product extends Category {
     private String productID;
     private String productName;
     private int productQuantity;
+    private int stocks;
     private int bulkValue;
     private String updateDate; // format: dd/mm/yyyy eg: 02/1/2020
 
 
     //constructor
     public Product() {
-        this(null,null,null,null,0,0,null);
+        this(null,null,null,null,0,0,0,null);
     }
 
-    public Product(String categoryID, String categoryName,String productID, String productName, int productQuantity,int bulkValue, String updateDate) {
+    public Product(String categoryID, String categoryName,String productID, String productName, int productQuantity,int stocks, int bulkValue, String updateDate) {
         super(categoryID,categoryName);
         this.productID = productID;
         this.productName = productName;
         this.productQuantity = productQuantity;
+        this.stocks = stocks;
         this.bulkValue = bulkValue;
         this.updateDate = updateDate;
     }
@@ -36,6 +38,7 @@ public class Product extends Category {
     public String getProductID() {return productID;}
     public String getProductName() {return productName;}
     public int getProductQuantity() {return productQuantity;}
+    public int getProductStocks() {return stocks;}
     public int getBulkValue() {return bulkValue;}
 
     //process
@@ -81,12 +84,12 @@ public class Product extends Category {
         boolean exist = checkExist(productID);
 
         if(exist) {
-            System.out.println("Product ID not found!");
+            System.out.println("Product ID is exits\n Please update the product stocks instead!");
         } else {
             try {
                 PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter("product.txt",true)));
 
-                add.println(productID + ";" + productName + ";" + productQuantity + ";" + bulkValue + ";" +super.getCategoryID() + ";" + updateDate);
+                add.println(productID + ";" + productName + ";" + productQuantity + ";" + stocks +";"+ bulkValue + ";" +super.getCategoryID() + ";" + updateDate);
                 add.close();
 
             } catch (IOException ioe) {
@@ -106,7 +109,7 @@ public class Product extends Category {
              try {
                  PrintWriter add = new PrintWriter(new BufferedWriter(new FileWriter("product.txt",true)));
  
-                 add.println(productID + ";" + productName + ";" + productQuantity + ";" + bulkValue + ";" +super.getCategoryID() + ";" + updateDate);
+                 add.println(productID + ";" + productName + ";" + productQuantity + ";" + stocks + ";" + bulkValue + ";" +super.getCategoryID() + ";" + updateDate);
                  add.close();
                  System.out.println("Product stock update successfully!");
  
@@ -120,7 +123,7 @@ public class Product extends Category {
     static void delete(String id) {
         boolean exist = checkExist(id);
         String pid,pname,pcategory,pupdate;
-        int pquantity,pbulk;
+        int pquantity,pbulk,pstocks;
         String temp = "temp.txt";
         String ori = "product.txt";
         File tempFile = new File(temp);
@@ -140,12 +143,13 @@ public class Product extends Category {
                     pid = inputs.nextToken();
                     pname = inputs.nextToken();
                     pquantity = Integer.parseInt(inputs.nextToken());
+                    pstocks = Integer.parseInt(inputs.nextToken());
                     pbulk = Integer.parseInt(inputs.nextToken());
                     pcategory = inputs.nextToken();
                     pupdate = inputs.nextToken();
 
                     if(!pid.equalsIgnoreCase(id)) {
-                        add.println(pid + ";" + pname + ";" + pquantity + ";" + pbulk + ";" + pcategory + ";" + pupdate);
+                        add.println(pid + ";" + pname + ";" + pquantity + ";" + pstocks +";" + pbulk + ";" + pcategory + ";" + pupdate);
                     }
 
                     data = in.readLine();
@@ -171,7 +175,7 @@ public class Product extends Category {
 
         Product [] dat = new Product[9999];//array size let it bigger...
         String pid,name,category,date;
-        int quantity,bulkvalue,i = 0;
+        int quantity,bulkvalue,pstocks,i = 0;
         try {
             BufferedReader in = new BufferedReader(new FileReader("product.txt"));
             String data = in.readLine();
@@ -182,6 +186,7 @@ public class Product extends Category {
                 pid = inputs.nextToken();
                 name = inputs.nextToken();
                 quantity = Integer.parseInt(inputs.nextToken());
+                pstocks = Integer.parseInt(inputs.nextToken());
                 bulkvalue = Integer.parseInt(inputs.nextToken());
                 category = inputs.nextToken();
                 date = inputs.nextToken();
@@ -189,7 +194,7 @@ public class Product extends Category {
                 Category catName = Category.search(category, null);
 
                 if(pid.equalsIgnoreCase(id) || name.equalsIgnoreCase(pname)) {
-                    dat[i] = new Product(category,catName.getCategoryName(),pid,name,quantity,bulkvalue,date);
+                    dat[i] = new Product(category,catName.getCategoryName(),pid,name,quantity,pstocks,bulkvalue,date);
                     i++;
                 }
                 data = in.readLine();
@@ -202,6 +207,6 @@ public class Product extends Category {
     }
 
     public String toString() {
-        return super.toString() + "\nProduct ID: " + productID + "\nProduct Name: " + productName + "\nProduct Quantity: " + productQuantity + "\nUpdate Date: " + updateDate + "\n";
+        return super.toString() + "\nProduct ID: " + productID + "\nProduct Name: " + productName + "\nMonth Production: " + productQuantity +"\nStocks: "+ stocks + "\nUpdate Date: " + updateDate + "\n";
     }
 }
