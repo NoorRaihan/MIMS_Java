@@ -526,7 +526,8 @@ public class Main {
         Category [] data = getAllCategories();
         int length = checkLength(data);
         int totalProduction = 0;
-        int average,month,year;
+        int month,year;
+        double average;
         
         System.out.print("Enter month: ");
         month = Integer.parseInt(in.nextLine());
