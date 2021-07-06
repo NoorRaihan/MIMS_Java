@@ -411,9 +411,10 @@ public class Main {
         Scanner in = new Scanner(System.in);
         System.out.println("\n[1]  DEBUG CALCULATE CATEGORIES");
         System.out.println("[2]  DEBUG AVERAGE CALCULATION");
-        System.out.println("[3]  DEBIG BULK AMOUNT");
+        System.out.println("[3]  DEBUG BULK AMOUNT");
         System.out.println("[4]  DEBUG LOWEST PRODUCTION");
         System.out.println("[5] DEBUG LOWEST PRODUCT STOCKS");
+        System.out.println("[6] DEBUG LIST ALL CATEGORIES");
         System.out.println("[99] Back to Main Menu");
 
         int choice;
@@ -431,7 +432,7 @@ public class Main {
                 case 2:
                     flag = false;
                     //delete product method here
-                    
+                    calculateAverage();
                     break;
                 case 3:
                     flag = false;
@@ -441,11 +442,15 @@ public class Main {
                 case 4:
                     flag = false;
                     //search product method here
-                    
                     break;
                 case 5:
                     flag = false;
                     //debug method here
+                    break;
+                case 6:
+                    flag = false;
+                    //debug method here
+                    listAllCategories();
                     break;
                 case 99:
                     flag = false;
@@ -455,6 +460,30 @@ public class Main {
                     System.out.println("Invalid choice!");
             }
         }
+    }
+
+    static Category [] getAllCategories() {
+        Category [] dat = new Category[9999];
+        String id,name;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("category.txt"));
+            String data = in.readLine();
+            int i = 0;
+            while(data != null) {
+                StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                id = inputs.nextToken();
+                name = inputs.nextToken();
+                
+                dat[i]= new Category(id,name);
+                data = in.readLine();
+                i++;
+            }
+            in.close();
+        }catch (IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe);
+        }
+        return dat;
     }
 
     static void calculateCategories() {
@@ -479,6 +508,40 @@ public class Main {
         } else {
             System.out.println("Category not exist!");
         }
+    }
+
+    static void listAllCategories() {
+        System.out.print("\u000C");
+        Category [] data = getAllCategories();
+        int length = checkLength(data);
+    
+        for(int i=0; i<length; i++) {
+            System.out.println(data[i].toString());
+        }
+    }
+
+    static void calculateAverage() {
+        System.out.print("\u000C");
+        Scanner in = new Scanner(System.in);
+        Category [] data = getAllCategories();
+        int length = checkLength(data);
+        int totalProduction = 0;
+        int month,year;
+        double average;
+        
+        System.out.print("Enter month: ");
+        month = Integer.parseInt(in.nextLine());
+        System.out.print("Enter year: ");
+        year = Integer.parseInt(in.nextLine());
+
+        for(int i=0; i<length; i++) {
+            totalProduction += data[i].calcQuantity(month, year);
+        }
+
+        average = totalProduction/length;
+        System.out.println("Total Categories: " + length);
+        System.out.println("Total Production: " + totalProduction);
+        System.out.println("Average production: " + average);
     }
 
     //---------------------------------------------------------------------------------------
