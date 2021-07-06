@@ -131,6 +131,7 @@ public class Main {
         System.out.println("\n[1]  Category Section");
         System.out.println("[2]  Product Section");
         System.out.println("[3]  Generate Report");
+        System.out.println("[4]  DEBUG MENU <- CODE TESTING");
         System.out.println("[99] Exit Program");
 
         int choice;
@@ -153,6 +154,11 @@ public class Main {
                 case 3:
                     flag = false;
                     //report menu here
+                    break;
+                case 4:
+                    flag = false;
+                    //report menu here
+                    displayDEBUG(data);;//testing purpose
                     break;
                 case 99:
                     flag = false;
@@ -268,7 +274,7 @@ public class Main {
         int quantity,bulkValue;
         Category catData = null;
 
-        System.out.println("--------------ADD PRODUCT---------------");
+        System.out.println("--------------ADD NEW PRODUCT---------------");
         System.out.print("\nProduct ID: ");
         id = in.nextLine();
 
@@ -294,7 +300,7 @@ public class Main {
         System.out.print("Insertion Date [eg: 21/1/2020]: ");
         updateDate = in.nextLine();
 
-        Product data = new Product(categoryID,catData.getCategoryName(),id,name,quantity,bulkValue,updateDate);
+        Product data = new Product(categoryID,catData.getCategoryName(),id,name,quantity,quantity,bulkValue,updateDate);
 
         System.out.print("Are you confirm [yes/no]: ");
         choice = choicePicker(in.nextLine());
@@ -347,9 +353,9 @@ public class Main {
             System.out.print("Insertion Date [eg:12/7/2021]: ");
             updatedate = in.nextLine();
 
-            int actQuantity = quantity + data[arrLatest].getProductQuantity();
+            int actQuantity = quantity + data[arrLatest].getProductStocks();
 
-            Product newData = new Product(data[arrLatest].getCategoryID(),data[arrLatest].getCategoryName(),id,data[arrLatest].getProductName(),actQuantity,data[arrLatest].getBulkValue(),updatedate);
+            Product newData = new Product(data[arrLatest].getCategoryID(),data[arrLatest].getCategoryName(),id,data[arrLatest].getProductName(),quantity,actQuantity,data[arrLatest].getBulkValue(),updatedate);
             newData.update();//add the update stocks
         } else {
             System.out.println("Product ID not found!");
@@ -395,6 +401,88 @@ public class Main {
             System.out.println("Category not exist!");
         }
     }
+
+
+    //--------------------testing purpose----------------------------------------------------
+
+    static void displayDEBUG(Company data) {
+        System.out.print("\u000C");
+        bannerCompany(data);
+        Scanner in = new Scanner(System.in);
+        System.out.println("\n[1]  DEBUG CALCULATE CATEGORIES");
+        System.out.println("[2]  DEBUG AVERAGE CALCULATION");
+        System.out.println("[3]  DEBIG BULK AMOUNT");
+        System.out.println("[4]  DEBUG LOWEST PRODUCTION");
+        System.out.println("[5] DEBUG LOWEST PRODUCT STOCKS");
+        System.out.println("[99] Back to Main Menu");
+
+        int choice;
+        boolean flag = true;
+        while(flag) {
+
+            System.out.print("Enter choice: ");
+            choice = Integer.parseInt(in.nextLine());
+            switch(choice) {
+                case 1:
+                    flag = false;
+                    //add product method here
+                    calculateCategories();
+                    break;
+                case 2:
+                    flag = false;
+                    //delete product method here
+                    
+                    break;
+                case 3:
+                    flag = false;
+                    //update product method here
+                    
+                    break;
+                case 4:
+                    flag = false;
+                    //search product method here
+                    
+                    break;
+                case 5:
+                    flag = false;
+                    //debug method here
+                    break;
+                case 99:
+                    flag = false;
+                    mainMenu(data);
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+    }
+
+    static void calculateCategories() {
+        System.out.print("\u000C");
+        Scanner in = new Scanner(System.in);
+        String id;
+        int month,year;//testing purpose
+        System.out.println("--------------------DEBUG CALCULATE CATEGORIES BY MONTH----------------------");
+        System.out.print("\nEnter Category ID [eg:AX119]: ");
+        id = in.nextLine();
+
+        Category data = Category.search(id,null);
+        if(data != null) {
+            System.out.print("Enter month: ");
+            month = Integer.parseInt(in.nextLine());
+            System.out.print("Enter year: ");
+            year = Integer.parseInt(in.nextLine());
+            int stocks = data.calcQuantity(month, year);
+            System.out.println("\n" + data.toString());
+            System.out.println("Month Production: " + stocks);
+            
+        } else {
+            System.out.println("Category not exist!");
+        }
+    }
+
+    //---------------------------------------------------------------------------------------
+
 
     static Company registerCompany() {
 
