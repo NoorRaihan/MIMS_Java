@@ -637,8 +637,13 @@ public class Main {
                     yearCount++;
                 }
             }
-            tempStocks = prodResult[yearCount].getProductStocks();
-            bulkVal = prodResult[yearCount].getBulkValue();
+            if (yearCount == 0) {
+                return 0;
+            } else {
+                tempStocks = prodResult[yearCount-1].getProductStocks();
+                bulkVal = prodResult[yearCount-1].getBulkValue();
+            }
+            
         }
         if (bulkVal == 0) {
             bulk = 0;
