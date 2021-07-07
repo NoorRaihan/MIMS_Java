@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.util.StringTokenizer;
-
+import java.util.function.IntPredicate;
 //normal stuff
 import java.util.Scanner;
 
@@ -413,8 +413,9 @@ public class Main {
         System.out.println("[2]  DEBUG AVERAGE CALCULATION");
         System.out.println("[3]  DEBUG BULK AMOUNT");
         System.out.println("[4]  DEBUG LOWEST PRODUCTION");
-        System.out.println("[5] DEBUG LOWEST PRODUCT STOCKS");
-        System.out.println("[6] DEBUG LIST ALL CATEGORIES");
+        System.out.println("[5]  DEBUG LOWEST PRODUCT STOCKS");
+        System.out.println("[6]  DEBUG LIST ALL CATEGORIES");
+        System.out.println("[7]  DEBUG LIST ALL PRODUCTS");
         System.out.println("[99] Back to Main Menu");
 
         int choice;
@@ -437,7 +438,7 @@ public class Main {
                 case 3:
                     flag = false;
                     //update product method here
-                    
+                    bulkList();
                     break;
                 case 4:
                     flag = false;
@@ -452,6 +453,11 @@ public class Main {
                     //debug method here
                     listAllCategories();
                     break;
+                case 7:
+                    flag = false;
+                    //debug method here
+                    listAllProducts();
+                    break;
                 case 99:
                     flag = false;
                     mainMenu(data);
@@ -460,6 +466,61 @@ public class Main {
                     System.out.println("Invalid choice!");
             }
         }
+    }
+
+    static String[][] getAllProducts() {
+
+        String [][]  seen = new String[9999][2]; //use multidimensional array
+        String pid,pname;
+        int j=0;
+        boolean flag = false;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("product.txt"));
+
+            String data = in.readLine();
+            while(data != null) {
+                StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                pid = inputs.nextToken();
+                pname = inputs.nextToken();
+
+                for(int i=0;i<seen.length;i++) {
+  
+                    if(seen[i][0] == null) {
+                        flag = false;
+                        break;
+                    } else if(seen[i][0].equalsIgnoreCase(pid)){
+                        flag = true;
+                        break;
+                    }
+                }
+                if(flag == false) {
+                    seen[j][0] = pid;
+                    seen[j][1] = pname;
+                    j++;
+                }
+                data = in.readLine();
+            }
+            in.close();
+        }catch (IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe.getMessage());
+        }
+        return seen;
+    }
+
+    static void listAllProducts() {
+        System.out.print("\u000C");
+        String [][] products = getAllProducts();
+        System.out.println("-------------LISTING OF PRODUCT---------------");
+        System.out.println("\nID\tNAME");
+        System.out.println("==\t==========");
+
+        for(int i=0;i<products.length;i++) {
+
+            if(products[i][0] != null) {
+                System.out.println(products[i][0]+"\t"+products[i][1]);
+            }
+       }
     }
 
     static Category [] getAllCategories() {
@@ -543,6 +604,81 @@ public class Main {
         System.out.println("Total Production: " + totalProduction);
         System.out.println("Average production: " + average);
     }
+
+    static int calcBulk(String id,int month,int year) {
+        int bulk,bulkVal=0,tempStocks=0,mm,yy;
+        String tempDate;
+        Product [] prodResult = Product.searchPro(id, null);
+        int length = checkLength(prodResult);
+        
+        if(month > 0) {
+            for(int i=0;i<length;i++){ //searching for specific month and year
+                tempDate = prodResult[i].getUpdateDate();
+
+                String [] parts = tempDate.split("/",3);
+                mm = Integer.parseInt(parts[1]);
+                yy = Integer.parseInt(parts[2]);
+
+                if(mm == month && yy == year){
+                    tempStocks = prodResult[i].getProductStocks();
+                    bulkVal = prodResult[i].getBulkValue();
+                    break;
+                }
+            }
+        } else if(month == 0) {
+            int yearCount = 0;
+            for(int i=0;i<length;i++){ //searching for specific year
+                tempDate = prodResult[i].getUpdateDate();
+
+                String [] parts = tempDate.split("/",3);
+                yy = Integer.parseInt(parts[2]);
+
+                if(yy == year){
+                    yearCount++;
+                }
+            }
+            if (yearCount == 0) {
+                return 0;
+            } else {
+                tempStocks = prodResult[yearCount-1].getProductStocks();
+                bulkVal = prodResult[yearCount-1].getBulkValue();
+            }
+            
+        }
+        if (bulkVal == 0) {
+            bulk = 0;
+        } else {
+            bulk = tempStocks / bulkVal;
+        }
+        return bulk;
+    }
+
+    static void bulkList() {
+        System.out.print("\u000C");
+        Scanner in = new Scanner(System.in);
+        int month,year;
+        System.out.println("--------------------DEBUG CALCULATE BULK VALUE ALL PRODUCTS----------------------");
+        String [][] prodList = getAllProducts(); //get the product id and name list
+        String id;
+        int bulk;
+
+        System.out.print("Enter month: ");
+        month = Integer.parseInt(in.nextLine());
+
+        System.out.print("Enter year: ");
+        year = Integer.parseInt(in.nextLine());
+
+        for(int i=0;i<prodList.length;i++) {
+
+            if(prodList[i][0] != null) {
+                id = prodList[i][0];
+                bulk = calcBulk(id, month, year);
+                System.out.println(id + " : " + bulk);
+            }
+       }
+    }
+
+    
 
     //---------------------------------------------------------------------------------------
 
