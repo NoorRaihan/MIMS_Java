@@ -40,6 +40,7 @@ public class Product extends Category {
     public int getProductQuantity() {return productQuantity;}
     public int getProductStocks() {return stocks;}
     public int getBulkValue() {return bulkValue;}
+    public String getUpdateDate() {return updateDate;}
 
     //process
     static boolean checkExist(String ID) { //check if product exist or not
