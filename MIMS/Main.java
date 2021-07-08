@@ -447,6 +447,7 @@ public class Main {
                 case 5:
                     flag = false;
                     //debug method here
+                    viewLowest();
                     break;
                 case 6:
                     flag = false;
@@ -682,7 +683,90 @@ public class Main {
        }
     }
 
-    
+    static String [] findLowestStocks(String id) { //receive category id
+        String [][] prodList = getAllProducts();
+        Product [] prodData = null;
+        int month = 0;//change this laterr
+        int year = 2021;//change this laterr
+        int stocks = 0;
+        int lowest = -1;
+        int yearCount = 0;
+        String lowid = null;
+        String [] lowData = new String [2];
+
+        for(int i=0;i<prodList.length;i++) {
+            
+            if(prodList[i][0] != null) {
+                String pid = prodList[i][0];
+                prodData = Product.searchPro(pid, null);
+                int length = checkLength(prodData);
+
+                for(int j=0;j<length;j++) {
+                    String category = prodData[j].getCategoryID();
+                    String date = prodData[j].getUpdateDate();
+                    String [] parts = date.split("/",3);
+                    int mm = Integer.parseInt(parts[1]);
+                    int yy = Integer.parseInt(parts[2]);
+
+                    if(category.equalsIgnoreCase(id) && year == yy ) {
+                        if (month == 0) {
+                            yearCount++;
+                        } else if(month > 0){
+                            if(month == mm) {
+                                stocks = prodData[j].getProductStocks();
+                                lowid = prodData[j].getProductID();
+                                break;
+                            }
+                        }else {
+                            stocks = 0;
+                            lowid = null;
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+                if(month == 0) {
+                    if(yearCount == 0) {
+                        continue;
+                    } else {
+                        stocks = prodData[yearCount-1].getProductStocks();
+                        lowid = prodData[yearCount-1].getProductID();
+                    } 
+                }
+                
+                //comparing the lowest
+                if(lowest<0) {
+                    lowest = stocks;
+                } else if (stocks <= lowest) {
+                    lowest = stocks;
+                }
+             } else {
+                 continue;
+             }
+             yearCount = 0;
+        }
+        lowData[0] = lowid;
+        lowData[1] = Integer.toString(lowest);
+        return lowData;
+    }
+
+    static void viewLowest() {
+        System.out.print("\u000C");
+        System.out.println("------------------DEBUG CHECK LOWEST STOCKS EACH CATEGORY---------------");
+        Category [] catList = getAllCategories();
+        int length = checkLength(catList);
+
+        for(int i=0;i<length;i++) {
+            String [] data = findLowestStocks(catList[i].getCategoryID());
+            String pname = data[0];
+            int stocks = Integer.parseInt(data[1]);
+
+            if(pname == null) {
+                pname = "NO RECORD";
+            }
+            System.out.println(catList[i].getCategoryName()+":"+ pname + "=" + stocks);
+        }
+    }
 
     //---------------------------------------------------------------------------------------
 
