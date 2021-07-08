@@ -692,6 +692,7 @@ public class Main {
         int lowest = -1;
         int yearCount = 0;
         String lowid = null;
+        String tempId = null;
         String [] lowData = new String [2];
 
         for(int i=0;i<prodList.length;i++) {
@@ -730,15 +731,17 @@ public class Main {
                         continue;
                     } else {
                         stocks = prodData[yearCount-1].getProductStocks();
-                        lowid = prodData[yearCount-1].getProductID();
+                        tempId = prodData[yearCount-1].getProductID();
                     } 
                 }
                 
                 //comparing the lowest
                 if(lowest<0) {
                     lowest = stocks;
+                    lowid = tempId;
                 } else if (stocks <= lowest) {
                     lowest = stocks;
+                    lowid = tempId;
                 }
              } else {
                  continue;
@@ -767,6 +770,7 @@ public class Main {
             System.out.println(catList[i].getCategoryName()+":"+ pname + "=" + stocks);
         }
     }
+
 
     //---------------------------------------------------------------------------------------
 
