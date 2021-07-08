@@ -606,7 +606,7 @@ public class Main {
     }
 
     static int calcBulk(String id,int month,int year) {
-        int bulk,bulkVal=0,tempStocks=0,mm,yy;
+        int bulk=0,bulkVal=0,tempStocks=0,mm,yy;
         String tempDate;
         Product [] prodResult = Product.searchPro(id, null);
         int length = checkLength(prodResult);
@@ -645,10 +645,14 @@ public class Main {
             }
             
         }
-        if (bulkVal == 0) {
+        //counting the bulk
+        if(bulkVal == 0) {
             bulk = 0;
-        } else {
-            bulk = tempStocks / bulkVal;
+        }else {
+            while(tempStocks >= bulkVal ) {
+                bulk++;
+                tempStocks -= bulkVal;
+            }
         }
         return bulk;
     }
