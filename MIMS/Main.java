@@ -412,7 +412,7 @@ public class Main {
         System.out.println("\n[1]  DEBUG CALCULATE CATEGORIES");
         System.out.println("[2]  DEBUG AVERAGE CALCULATION");
         System.out.println("[3]  DEBUG BULK AMOUNT");
-        System.out.println("[4]  DEBUG LOWEST PRODUCTION");
+        System.out.println("[4]  DEBUG HIGHEST PRODUCTION");
         System.out.println("[5]  DEBUG LOWEST PRODUCT STOCKS");
         System.out.println("[6]  DEBUG LIST ALL CATEGORIES");
         System.out.println("[7]  DEBUG LIST ALL PRODUCTS");
@@ -443,6 +443,7 @@ public class Main {
                 case 4:
                     flag = false;
                     //search product method here
+                    viewHighest();
                     break;
                 case 5:
                     flag = false;
@@ -771,7 +772,82 @@ public class Main {
         }
     }
 
+    static String [] findHighestProduction(String id) {
+        String [][] prodList = getAllProducts();
+        Product [] prodData = null;
+        int month = 0;//change this laterr
+        int year = 2012;//change this laterr
+        int tempProduction = 0;
+        int lowest = -1;
+        int yearCount = 0;
+        String lowid = null;
+        String tempId = null;
+        String [] lowData = new String [2];
 
+        for(int i=0;i<prodList.length;i++){
+            
+            if(prodList[i][0] != null) {
+                String pid = prodList[i][0];
+                prodData = Product.searchPro(pid, null);
+                int length = checkLength(prodData);
+
+                for(int j=0;j<length;j++) {
+                    String category = prodData[j].getCategoryID();
+                    String date = prodData[j].getUpdateDate();
+                    String [] parts = date.split("/",3);
+                    int mm = Integer.parseInt(parts[1]);
+                    int yy = Integer.parseInt(parts[2]);
+
+                    if(category.equalsIgnoreCase(id) && year == yy) {
+                        if(month == 0) {
+                            tempProduction += prodData[j].getProductQuantity();
+                            tempId = pid;
+                        }else if(month > 0){
+                            if(month == mm) {
+                                System.out.println(tempProduction);
+                                tempProduction = prodData[j].getProductQuantity();
+                                tempId = pid;
+                                break;
+                            }
+                        }
+                    }
+                    if(lowest < 0) {
+                        lowest = tempProduction;
+                        lowid = tempId;
+                    } else if(tempProduction >= lowest) {
+                        lowest = tempProduction;
+                        lowid = tempId;
+                    }
+                }
+            } else {
+                continue;
+            }
+            if(month == 0) {
+                tempProduction = 0;
+            }
+        }
+        lowData[0] = lowid;
+        lowData[1] = Integer.toString(lowest);
+        return lowData;
+    }
+
+    static void viewHighest() {
+        System.out.print("\u000C");
+        System.out.println("------------------DEBUG CHECK HIGHEST PRODUCTION EACH CATEGORY---------------");
+        Category [] catList = getAllCategories();
+        int length = checkLength(catList);
+
+        for(int i=0;i<length;i++) {
+            String [] data = findHighestProduction(catList[i].getCategoryID());
+            String pname = data[0];
+            int stocks = Integer.parseInt(data[1]);
+
+            if(pname == null) {
+                pname = "NO RECORD";
+            }
+            System.out.println(catList[i].getCategoryName()+":"+ pname + "=" + stocks);
+        }
+    }
     //---------------------------------------------------------------------------------------
 
 
