@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import com.gnostice.pdfone.*;
 
 public class Report extends ItemsInfo {
 
@@ -57,7 +58,7 @@ public class Report extends ItemsInfo {
     public double calculateAverage(int month) {
         Category [] data = super.getCategoryList();
         int length = ItemsInfo.checkLength(data);
-        int totalProduction = 0;
+        double totalProduction = 0;
         double average;
 
         for(int i=0; i<length; i++) {
@@ -323,4 +324,22 @@ public class Report extends ItemsInfo {
 
 
     }
+
+    public void generate2pdf() {
+       
+        //create pdfdoc instance
+        PdfDocument doc = new PdfDocument();
+
+        try {
+            doc.writeText("test123");
+
+            doc.save("test1.pdf");
+            doc.close();
+
+        } catch(IOException | PdfException ioe) {
+            System.err.println("Something went wrong!");
+        }
+
+    }
+
 }

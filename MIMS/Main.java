@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.util.StringTokenizer;
-import java.util.function.IntPredicate;
 //normal stuff
 import java.util.Scanner;
 
@@ -27,8 +26,9 @@ public class Main {
         
     }
 
-    static void productMenu(Company data) {
+    static void productMenu() {
         System.out.print("\u000C");
+        Company data = verifyCompany();
         bannerCompany(data);
         Scanner in = new Scanner(System.in);
         System.out.println("\n[1]  Add Product");
@@ -75,8 +75,9 @@ public class Main {
         
     }
     
-    static void categoryMenu(Company data) {
+    static void categoryMenu() {
         System.out.print("\u000C");
+        Company data = verifyCompany();
         bannerCompany(data);
         Scanner in = new Scanner(System.in);
         System.out.println("\n[1]  Add Category");
@@ -144,12 +145,12 @@ public class Main {
                 case 1:
                     flag = false;
                     //category menu here
-                    categoryMenu(data);
+                    categoryMenu();
                     break;
                 case 2:
                     flag = false;
                     //product menu here
-                    productMenu(data);
+                    productMenu();
                     break;
                 case 3:
                     flag = false;
@@ -182,6 +183,24 @@ public class Main {
         return flag;
     }
 
+    static void tunggu(int ms) {
+        try {
+            Thread.sleep(3000);
+        }catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+       }
+    }
+
+    static void pressAnyKey() {
+        System.out.println("Press Enter key to continue...");
+        try
+        {
+            System.in.read();
+        }  
+        catch(Exception e){
+            System.err.println("went wrong!");
+        }  
+    }
 
     static void addCategories() {
         System.out.print("\u000C");//to clear the terminal :) 
@@ -202,6 +221,9 @@ public class Main {
 
        if(choice) {
            data.add(); //do the add product job
+           System.out.println("Category added successfully!");
+           tunggu(3000);
+           categoryMenu();
        }else {
            addCategories(); //call this function itself 
        }
@@ -222,6 +244,9 @@ public class Main {
 
        if(choice) {
             Category.delete(id); //do the delete process; //do the add product job
+            System.out.println("Category deleted successfully!");
+            tunggu(3000);
+            categoryMenu();
        }else {
            deleteCategories(); //call this function itself 
        }
@@ -249,12 +274,16 @@ public class Main {
             if(choice) {
                 Category newData = new Category(id,name);
                 newData.update();//do the update category job
+                tunggu(3000);
+                categoryMenu();
             }else {
                 updateCategories();//call this function itself 
             }
 
         } else {
             System.out.println("Category ID not found!");
+            pressAnyKey();
+            updateCategories();
         }
     }
 
@@ -299,6 +328,9 @@ public class Main {
 
        if(choice) {
            data.add();//do the add product job
+           System.out.println("Product added successfully!");
+           tunggu(3000);
+           productMenu();
        }else {
            addProducts();//call this function itself 
        }
@@ -320,6 +352,9 @@ public class Main {
 
        if(choice) {
             Product.delete(id); //do the delete process; //do the add product job
+            System.out.println("Product deleted successfully!");
+            tunggu(3000);
+            productMenu();
        }else {
            deleteProducts(); //call this function itself 
        }
@@ -349,8 +384,13 @@ public class Main {
 
             Product newData = new Product(data[arrLatest].getCategoryID(),data[arrLatest].getCategoryName(),id,data[arrLatest].getProductName(),quantity,actQuantity,data[arrLatest].getBulkValue(),updatedate);
             newData.update();//add the update stocks
+            System.out.println("Product updated successfully!");
+            tunggu(3000);
+            productMenu();
         } else {
             System.out.println("Product ID not found!");
+            pressAnyKey();
+            productMenu();
         }
     }
 
@@ -376,6 +416,8 @@ public class Main {
         } else {
             System.out.println("Product does not exist!");
         }
+        pressAnyKey();
+        productMenu();
     }
 
     static void searchingCategories() { //search categories by inputting id
@@ -392,6 +434,8 @@ public class Main {
         } else {
             System.out.println("Category not exist!");
         }
+        pressAnyKey();
+        categoryMenu();
     }
 
 
@@ -455,7 +499,7 @@ public class Main {
         Catsorted = sorting(list);
         //display the sorted
         for(int j=0;j<length;j++) {
-            System.out.println("\n"+Catsorted[j] + ":" + Category.search(Catsorted[j], null).getCategoryName());
+            System.out.println("\nCategory:"+ "[" +Catsorted[j] + "]"+ Category.search(Catsorted[j], null).getCategoryName());
             plist = Product.getAllProducts(Catsorted[j]);
             if(plist[0][0] == null) {
                 System.out.println("NO RECORD!");
@@ -477,7 +521,8 @@ public class Main {
         Report reportTest = new Report(compInfo,catList,prodList,year);
         System.out.println("--------------------------------TEST REPORT------------------------");
         viewSortedAll();
-        reportTest.generateReportTest(2);
+        reportTest.generateReportTest(0);
+        reportTest.generate2pdf();
 
     }
     //---------------------------------------------------------------------------------------
