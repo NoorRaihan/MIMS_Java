@@ -1,33 +1,42 @@
+public class ItemsInfo {
 
-/**
- * Write a description of class ItemsInfo here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
-public class ItemsInfo
-{
-    // instance variables - replace the example below with your own
-    private int x;
+    private Company companyInfo;
+    private Category [] catList;
+    private String [][] prodList;
 
-    /**
-     * Constructor for objects of class ItemsInfo
-     */
-    public ItemsInfo()
-    {
-        // initialise instance variables
-        x = 0;
+    //constructor
+    public ItemsInfo() {
+        this(null,null,null);
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+    public ItemsInfo(Company companyInfo, Category [] catList, String[][] prodList) {
+
+        this.companyInfo = companyInfo;
+        this.catList = catList;
+        this.prodList = prodList;
+    }
+
+    //accessor
+    public Company getCompanyInfo() {return companyInfo;}
+    public Category [] getCategoryList() {return catList;}
+    public String [][] getProductList() {return prodList;} 
+
+    
+    //mutator
+    public void setAll(Company companyInfo, Category [] catList, String[][] prodList) {
+
+        this.companyInfo = companyInfo;
+        this.catList = catList;
+        this.prodList = prodList;
+    }
+
+    static int checkLength(Object [] array) { //this one for checking actual length of array
+        int count = 0;
+        for(Object myobj : array) { //using for-loop for code optimizinggggg and simple wohoo
+            if(myobj != null) {
+                count++;
+            }
+        }
+        return count;
     }
 }

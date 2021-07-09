@@ -207,6 +207,94 @@ public class Product extends Category {
         return dat;
     }
 
+    static String[][] getAllProducts() {
+
+        String [][]  seen = new String[9999][2]; //use multidimensional array
+        String pid,pname;
+        int j=0;
+        boolean flag = false;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("product.txt"));
+
+            String data = in.readLine();
+            while(data != null) {
+                StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                pid = inputs.nextToken();
+                pname = inputs.nextToken();
+
+                for(int i=0;i<seen.length;i++) {
+  
+                    if(seen[i][0] == null) {
+                        flag = false;
+                        break;
+                    } else if(seen[i][0].equalsIgnoreCase(pid)){
+                        flag = true;
+                        break;
+                    }
+                }
+                if(flag == false) {
+                    seen[j][0] = pid;
+                    seen[j][1] = pname;
+                    j++;
+                }
+                data = in.readLine();
+            }
+            in.close();
+        }catch (IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe.getMessage());
+        }
+        return seen;
+    }
+
+    static String[][] getAllProducts(String id) { //overload method receive category id
+
+        String [][]  seen = new String[9999][2]; //use multidimensional array
+        String pid,pname,pcategory;
+        int j=0;
+        int pquantity,pstocks,pbulk;
+        boolean flag = false;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("product.txt"));
+
+            String data = in.readLine();
+            while(data != null) {
+                StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                pid = inputs.nextToken();
+                pname = inputs.nextToken();
+                pquantity = Integer.parseInt(inputs.nextToken());
+                pstocks = Integer.parseInt(inputs.nextToken());
+                pbulk = Integer.parseInt(inputs.nextToken());
+                pcategory = inputs.nextToken();
+                    
+                if(pcategory.equalsIgnoreCase(id)) {
+                    for(int i=0;i<seen.length;i++) {
+                    
+                        if(seen[i][0] == null) {
+                            flag = false;
+                            break;
+                        } else if(seen[i][0].equalsIgnoreCase(pid)){
+                            flag = true;
+                            break;
+                        }
+                        
+                    }
+                    if(flag == false) {
+                        seen[j][0] = pid;
+                        seen[j][1] = pname;
+                        j++;
+                    }
+                }
+                data = in.readLine();
+            }
+            in.close();
+        }catch (IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe.getMessage());
+        }
+        return seen;
+    }
+
     public String toString() {
         return super.toString() + "\nProduct ID: " + productID + "\nProduct Name: " + productName + "\nMonth Production: " + productQuantity +"\nStocks: "+ stocks + "\nUpdate Date: " + updateDate + "\n";
     }
