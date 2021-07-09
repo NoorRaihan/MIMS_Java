@@ -416,6 +416,7 @@ public class Main {
         System.out.println("[5]  DEBUG LOWEST PRODUCT STOCKS");
         System.out.println("[6]  DEBUG LIST ALL CATEGORIES");
         System.out.println("[7]  DEBUG LIST ALL PRODUCTS");
+        System.out.println("[8]  DEBUG SORTING CATEGORY");
         System.out.println("[99] Back to Main Menu");
 
         int choice;
@@ -460,6 +461,11 @@ public class Main {
                     //debug method here
                     listAllProducts();
                     break;
+                case 8:
+                    flag = false;
+                    //debug method here
+                    viewSortedAll();
+                    break;
                 case 99:
                     flag = false;
                     mainMenu(data);
@@ -500,6 +506,54 @@ public class Main {
                     seen[j][0] = pid;
                     seen[j][1] = pname;
                     j++;
+                }
+                data = in.readLine();
+            }
+            in.close();
+        }catch (IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe.getMessage());
+        }
+        return seen;
+    }
+
+    static String[][] getAllProducts(String id) { //overload method receive category id
+
+        String [][]  seen = new String[9999][2]; //use multidimensional array
+        String pid,pname,pcategory;
+        int j=0;
+        int pquantity,pstocks,pbulk;
+        boolean flag = false;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("product.txt"));
+
+            String data = in.readLine();
+            while(data != null) {
+                StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                pid = inputs.nextToken();
+                pname = inputs.nextToken();
+                pquantity = Integer.parseInt(inputs.nextToken());
+                pstocks = Integer.parseInt(inputs.nextToken());
+                pbulk = Integer.parseInt(inputs.nextToken());
+                pcategory = inputs.nextToken();
+                    
+                if(pcategory.equalsIgnoreCase(id)) {
+                    for(int i=0;i<seen.length;i++) {
+                    
+                        if(seen[i][0] == null) {
+                            flag = false;
+                            break;
+                        } else if(seen[i][0].equalsIgnoreCase(pid)){
+                            flag = true;
+                            break;
+                        }
+                        
+                    }
+                    if(flag == false) {
+                        seen[j][0] = pid;
+                        seen[j][1] = pname;
+                        j++;
+                    }
                 }
                 data = in.readLine();
             }
@@ -848,6 +902,54 @@ public class Main {
             System.out.println(catList[i].getCategoryName()+":"+ pname + "=" + stocks);
         }
     }
+
+    static String [] sorting(String [] arr) {
+        String [] sorted = new String[arr.length];
+        String temp;
+
+        for(int i=0;i<arr.length;i++) {
+           
+            for(int j=i+1;j<arr.length;j++) {
+
+                if(arr[i].compareTo(arr[j])>0) {
+                    temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            } 
+        }
+
+        return arr;
+    }
+
+    static void viewSortedAll() {
+        Category [] catList = getAllCategories();
+        int length = checkLength(catList);
+        String [] list = new String[length];
+        String [] Catsorted = new String[length];
+        String [][] plist = null;
+         
+        for (int i=0;i<length;i++){
+            //insert id into the listing array
+            list[i] = catList[i].getCategoryID();
+        }
+
+        Catsorted = sorting(list);
+        //display the sorted
+        for(int j=0;j<length;j++) {
+            System.out.println("\n"+Catsorted[j] + ":" + Category.search(Catsorted[j], null).getCategoryName());
+            plist = getAllProducts(Catsorted[j]);
+            if(plist[0][0] == null) {
+                System.out.println("NO RECORD!");
+            }
+            for(int x=0;x<plist.length;x++) {
+                if(plist[x][0] != null) {
+                    System.out.println(plist[x][0]+":"+plist[x][1]);
+                }
+            }
+        }
+    }
+
     //---------------------------------------------------------------------------------------
 
 
