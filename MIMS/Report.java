@@ -1,7 +1,11 @@
 import java.io.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-import com.gnostice.pdfone.*;
+import org.apache.pdfbox.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 public class Report extends ItemsInfo {
 
@@ -22,9 +26,7 @@ public class Report extends ItemsInfo {
     public int getReportYear() {return reportYear;}
 
     //mutator
-    public void setAll(int reportYear) {
-        this.reportYear = reportYear;
-    }
+    public void setAll(int reportYear) {this.reportYear = reportYear;}
 
     //process
 
@@ -43,14 +45,31 @@ public class Report extends ItemsInfo {
 
     //view total production each categories
     public void viewTotalProd(int month) {
-        System.out.println("--------------------TOTAL PRODUCTION EACH CATEGORIES----------------------");
+        System.out.println("=========================================");
+        System.out.println("TOTAL PRODUCTION EACH CATEGORY");
+        System.out.println("=========================================");
         Category [] catList = super.getCategoryList();
         int length = ItemsInfo.checkLength(catList);
+        String [] list = new String[length];
+        for (int x=0;x<length;x++){
+            //insert id into the listing array
+            list[x] = catList[x].getCategoryID();
+        }
+        
+        list = ItemsInfo.sorting(list);
         for(int i=0;i<length;i++) {
-            String cid = catList[i].getCategoryID();
-            String cname = catList[i].getCategoryName();
+            String cid = list[i];
+            String cname = Category.search(list[i],null).getCategoryName();
             int production = calculateCategories(cid, month);
             System.out.println(cname + ":"  + production);
+            try {
+                PrintWriter wrt = new PrintWriter(new BufferedWriter(new FileWriter("tempreport.txt",true)));
+
+                wrt.println(cname + ":"  + production);
+                wrt.close();
+            }catch(IOException ioe) {
+                System.err.println("Something went wrong!\n" + ioe.getMessage());
+            }
         }
     }
 
@@ -69,6 +88,24 @@ public class Report extends ItemsInfo {
         return average;
     }
 
+    //view and write the average
+    public void viewAverage(int month) {
+
+        System.out.println("=========================================");
+        System.out.println("TOTAL AVERAGE WHOLE PRODUCTION");
+        System.out.println("=========================================");
+        double average = calculateAverage(month);
+        System.out.println("TOTAL AVERAGE PRODUCTION: " + average);
+        try {
+            PrintWriter wrt = new PrintWriter(new BufferedWriter(new FileWriter("tempreport.txt",true)));
+
+            wrt.println("AVERAGE PRODUCTION : " + average);
+            wrt.close();
+        }catch(IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe.getMessage());
+        }
+    }
+
     //calculate lowest stocks
     public String [] findLowestStocks(String id,int month) { //receive category id
         String [][] prodList = super.getProductList();
@@ -76,9 +113,9 @@ public class Report extends ItemsInfo {
         int stocks = -1;
         int lowest = -1;
         int yearCount = 0;
-        String lowid = null;
-        String tempId = null;
-        String [] lowData = new String [2];
+        String lowName = null;
+        String tempName= null;
+        String [] lowData = new String [3];
 
         for(int i=0;i<prodList.length;i++) {
             
@@ -101,7 +138,7 @@ public class Report extends ItemsInfo {
                         } else if(month > 0){
                             if(month == mm) {
                                 stocks = prodData[j].getProductStocks();
-                                tempId = prodData[j].getProductID();
+                                tempName = prodData[j].getProductName();
                                 break;
                             }
                         }
@@ -116,7 +153,7 @@ public class Report extends ItemsInfo {
                     } else {
                         // System.out.println("execute2");
                         stocks = prodData[yearCount-1].getProductStocks();
-                        tempId = prodData[yearCount-1].getProductID();
+                        tempName = prodData[yearCount-1].getProductName();
                     } 
                 }
                 
@@ -124,18 +161,18 @@ public class Report extends ItemsInfo {
                 if(lowest<0) {
                     // System.out.println("execute3");
                     lowest = stocks;
-                    lowid = tempId;
+                    lowName = tempName;
                 } else if (stocks <= lowest) {
                     // System.out.println("execute4");
                     lowest = stocks;
-                    lowid = tempId;
+                    lowName = tempName;
                 } 
              } else {
                  continue;
              }
              yearCount = 0;
         }
-        lowData[0] = lowid;
+        lowData[0] = lowName;
         lowData[1] = Integer.toString(lowest);
         return lowData;
     }
@@ -147,8 +184,8 @@ public class Report extends ItemsInfo {
         int tempProduction = 0;
         int lowest = -1;
         int yearCount = 0;
-        String lowid = null;
-        String tempId = null;
+        String lowName = null;
+        String tempName = null;
         String [] lowData = new String [2];
 
         for(int i=0;i<prodList.length;i++){
@@ -168,21 +205,21 @@ public class Report extends ItemsInfo {
                     if(category.equalsIgnoreCase(id) && reportYear == yy) {
                         if(month == 0) {
                             tempProduction += prodData[j].getProductQuantity();
-                            tempId = pid;
+                            tempName = prodData[j].getProductName();
                         }else if(month > 0){
                             if(month == mm) {
                                 tempProduction = prodData[j].getProductQuantity();
-                                tempId = pid;
+                                tempName = prodData[j].getProductName();
                                 break;
                             }
                         }
                     }
                     if(lowest < 0) {
                         lowest = tempProduction;
-                        lowid = tempId;
+                        lowName = tempName;
                     } else if(tempProduction >= lowest) {
                         lowest = tempProduction;
-                        lowid = tempId;
+                        lowName = tempName;
                     }
                 }
             } else {
@@ -192,7 +229,7 @@ public class Report extends ItemsInfo {
                 tempProduction = 0;
             }
         }
-        lowData[0] = lowid;
+        lowData[0] = lowName;
         lowData[1] = Integer.toString(lowest);
         return lowData;
     }
@@ -251,44 +288,81 @@ public class Report extends ItemsInfo {
     }
 
     public void bulkList(int month) {
-        System.out.println("--------------------DEBUG CALCULATE BULK VALUE ALL PRODUCTS----------------------");
+        System.out.println("=========================================");
+        System.out.println("BULK VALUE FOR ALL PRODUCTS");
+        System.out.println("=========================================");
         String [][] prodList = super.getProductList(); //get the product id and name list
-        String id;
+        String id,name;
         int bulk;
 
         for(int i=0;i<prodList.length;i++) {
 
             if(prodList[i][0] != null) {
                 id = prodList[i][0];
+                name = prodList[i][1];
                 bulk = calcBulk(id, month);
-                System.out.println(id + " : " + bulk);
+                System.out.println(name + " : " + bulk);
+                try {
+                    PrintWriter wrt = new PrintWriter(new BufferedWriter(new FileWriter("tempreport.txt",true)));
+
+                    wrt.println(name + " : " + bulk);
+                    wrt.close();
+                }catch(IOException ioe) {
+                    System.err.println("Something went wrong!\n" + ioe.getMessage());
+                }
             }
        }
     }
 
     public void viewHighest(int month) {
-        System.out.println("------------------DEBUG CHECK HIGHEST PRODUCTION EACH CATEGORY---------------");
+        System.out.println("=========================================");
+        System.out.println("HIGHEST PRODUCTION EACH CATEGORY");
+        System.out.println("=========================================");
         Category [] catList = super.getCategoryList();
         int length = ItemsInfo.checkLength(catList);
+        String [] list = new String[length];
 
+        for(int x=0;x<length;x++) {
+            list[x] = catList[x].getCategoryID();
+        }
+        list = ItemsInfo.sorting(list);
         for(int i=0;i<length;i++) {
-            String [] data = findHighestProduction(catList[i].getCategoryID(),month);
+            String [] data = findHighestProduction(list[i],month);
             String pname = data[0];
             int stocks = Integer.parseInt(data[1]);
 
             if(pname == null) {
                 pname = "NO RECORD";
             }
-            System.out.println(catList[i].getCategoryName()+":"+ pname + "=" + stocks);
+            System.out.println("CATEGORY : " + Category.search(list[i], null).getCategoryName());
+            System.out.println("[PRODUCT] "+pname + " : " + stocks);
+            try {
+                PrintWriter wrt = new PrintWriter(new BufferedWriter(new FileWriter("tempreport.txt",true)));
+
+                wrt.println("CATEGORY : " + Category.search(list[i], null).getCategoryName());
+                wrt.println("[PRODUCT] "+pname + " : " + stocks);
+                wrt.close();
+            }catch(IOException ioe) {
+                System.err.println("Something went wrong!\n" + ioe.getMessage());
+            }
         }
     }
 
     public void viewLowest(int month) {
-        System.out.println("------------------DEBUG CHECK LOWEST STOCKS EACH CATEGORY---------------");
+        System.out.println("=========================================");
+        System.out.println("LOWEST STOCKS EACH CATEGORY");
+        System.out.println("=========================================");
         Category [] catList = super.getCategoryList();
         int length = ItemsInfo.checkLength(catList);
+        String [] list = new String[length];
+
+        for(int x=0;x<length;x++) {
+            list[x] = catList[x].getCategoryID();
+        }
+
+        list = ItemsInfo.sorting(list);
         for(int i=0;i<length;i++) {
-            String [] data = findLowestStocks(catList[i].getCategoryID(),month);
+            String [] data = findLowestStocks(list[i],month);
             String pname = data[0];
             int stocks = Integer.parseInt(data[1]);
 
@@ -297,49 +371,244 @@ public class Report extends ItemsInfo {
                 stocks = 0;
             }
 
-            System.out.println(catList[i].getCategoryName()+":"+ pname + "=" + stocks);
+            System.out.println("CATEGORY : " + Category.search(list[i], null).getCategoryName());
+            System.out.println("[PRODUCT] "+pname + " : " + stocks);
+            try {
+                PrintWriter wrt = new PrintWriter(new BufferedWriter(new FileWriter("tempreport.txt",true)));
+
+                wrt.println("CATEGORY : " + Category.search(list[i], null).getCategoryName());
+                wrt.println("[PRODUCT] "+pname + " : " + stocks);
+                
+                wrt.close();
+            }catch(IOException ioe) {
+                System.err.println("Something went wrong!\n" + ioe.getMessage());
+            }
         }
     }
+
+    public void viewSorted() {
+        System.out.print("\u000C");
+        System.out.println("=========================================");
+        System.out.println("LISTING ALL CATEGORIES AND PRODUCTS");
+        System.out.println("=========================================");
+        Category [] catList = super.getCategoryList();
+        int length = ItemsInfo.checkLength(catList);
+        String [] list = new String[length];
+        String [] Catsorted = new String[length];
+        String [][] plist = null;
+         
+        for (int i=0;i<length;i++){
+            //insert id into the listing array
+            list[i] = catList[i].getCategoryID();
+        }
+
+        Catsorted = ItemsInfo.sorting(list);
+        //display the sorted
+        try {
+            PrintWriter wrt = new PrintWriter(new BufferedWriter(new FileWriter("tempproduct.txt",true)));
+
+            for(int j=0;j<length;j++) {
+                System.out.println("\nCATEGORY:"+ "[" +Catsorted[j] + "]"+ Category.search(Catsorted[j], null).getCategoryName());
+
+                wrt.println("\nCATEGORY:"+ "[" +Catsorted[j] + "]"+ Category.search(Catsorted[j], null).getCategoryName());
+                plist = Product.getAllProducts(Catsorted[j]);
+                if(plist[0][0] == null) {
+                    System.out.println("NO RECORD!");
+                    wrt.println("NO RECORD!");
+                }
+                for(int x=0;x<plist.length;x++) {
+                    if(plist[x][0] != null) {
+                        System.out.println("[PRODUCT] " + plist[x][0]+":"+plist[x][1]);
+                        wrt.println("[PRODUCT] " + plist[x][0]+":"+plist[x][1]);
+                    }
+                }
+            }
+            wrt.close();
+        }catch(IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe.getMessage());
+        }
+        System.out.println("=========================================");
+    }
+
+    static void banner(String title) {
+        try {
+            PrintWriter wrt = new PrintWriter(new BufferedWriter(new FileWriter("tempreport.txt",true)));
+            wrt.println("==========================================");
+            wrt.println(title);
+            wrt.println("==========================================");
+            wrt.close();
+        }catch(IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe.getMessage());
+        }
+    }
+
 
     //testing all the reports calculation algortihm
     public void generateReportTest(int month) {
 
+        //write sorting
+        viewSorted();
+
+        banner("TOTAL PRODUCTION EACH CATEGORY");
         //find every category
         viewTotalProd(month);
 
+        banner("AVERAGE WHOLE PRODUCTION");
         //find average
-        System.out.println("Total whole average: " + calculateAverage(month));
+        viewAverage(month);
 
+        banner("BULK VALUE EVERY PRODUCTS");
         //find bulk
         bulkList(month);
-       //-----------------------------------------------------------------------
 
-       //findHighest
+        banner("HIGHEST PRODCUTION EACH CATEGORY");
+        //findHighest prodcution
         viewHighest(month);
-        //-------------------------------------------------------------
 
+        banner("LOWEST STOCKS EACH CATEGORY");
         //find Lowest
         viewLowest(month);
-        //-----------------------------------------------------------------
-
-
+        
     }
 
-    public void generate2pdf() {
-       
-        //create pdfdoc instance
-        PdfDocument doc = new PdfDocument();
 
-        try {
-            doc.writeText("test123");
+    //generating report in pdf format
+    public void generate2pdf(int month) {
 
-            doc.save("test1.pdf");
+        PDDocument doc = new PDDocument();
+        PDPage blankPage = new PDPage();
+        PDPage blankPage2 = new PDPage();
+
+        try{
+            doc.addPage(blankPage);
+            doc.addPage(blankPage2);
+            PDPageContentStream content = new PDPageContentStream(doc, blankPage);
+            PDPageContentStream content2 = new PDPageContentStream(doc, blankPage2);
+            
+            //begin write text
+            //title of report
+            content.beginText();
+            content.setFont(PDType1Font.TIMES_BOLD, 36);
+            content.newLineAtOffset(30, 750);
+            if(month > 0) {
+                content.showText("MONTHLY REPORT");
+            } else {
+                content.showText("YEARLY REPORT");
+            }
+            content.endText();
+
+            //company info
+            content.beginText();
+            content.setFont(PDType1Font.TIMES_BOLD, 13);
+            content.newLineAtOffset(30, 730);
+            content.showText(super.getCompanyInfo().getCompanyName());
+            content.endText();
+
+            content.beginText();
+            content.setFont(PDType1Font.TIMES_BOLD, 13);
+            content.newLineAtOffset(30, 715);
+            content.showText(super.getCompanyInfo().getCompanyAddress());
+            content.endText();
+
+            content.beginText();
+            content.setFont(PDType1Font.TIMES_BOLD, 13);
+            content.newLineAtOffset(30, 700);
+            content.showText(super.getCompanyInfo().getCompanyPhone());
+            content.endText();
+
+            content.beginText();
+            content.setFont(PDType1Font.TIMES_BOLD, 13);
+            content.newLineAtOffset(30, 685);
+            content.showText(super.getCompanyInfo().getBusinessNumber());
+            content.endText();
+            
+            String date = null; 
+            content.beginText();
+            content.setFont(PDType1Font.TIMES_BOLD, 13);
+            content.newLineAtOffset(30, 660);
+            if(month > 0) {
+                date = "GENERATED FOR " + month + "/" + reportYear;
+                content.showText(date);
+            } else if(month == 0){
+                date = "GENERATED FOR " + reportYear;
+                content.showText(date);
+            }
+            content.endText();
+            
+            content.beginText();
+            content.setFont(PDType1Font.HELVETICA_BOLD, 11);
+            content.newLineAtOffset(30, 550);
+            content.showText("==========================================");
+            content.endText();
+
+            content.beginText();
+            content.setFont(PDType1Font.HELVETICA, 11);
+            content.newLineAtOffset(30, 535);
+            content.showText("ALL CATEGORIES AND PRODUCTS");
+            content.endText();
+
+            content.beginText();
+            content.setFont(PDType1Font.HELVETICA_BOLD, 11);
+            content.newLineAtOffset(30, 520);
+            content.showText("==========================================");
+            content.endText();
+
+            try {
+                File tempfile = new File("tempproduct.txt");
+                BufferedReader in = new BufferedReader(new FileReader("tempproduct.txt"));
+                String dataLine = in.readLine();
+                int yaxis = 505;
+                while(dataLine != null) {
+                    dataLine = dataLine.replaceAll("\t", "          ");//fix pdfbox not support the tab brrr
+                    content.beginText();
+                    content.setFont(PDType1Font.HELVETICA, 11);
+                    content.newLineAtOffset(30, yaxis);
+                    content.showText(dataLine);
+                    content.endText();
+                    dataLine = in.readLine();
+                    yaxis -= 15;
+                }
+                in.close();
+                tempfile.delete();
+            }catch (IOException ioe) {
+                System.err.println(ioe.getMessage());
+            }
+
+            try {
+                File tempfile = new File("tempreport.txt");
+                BufferedReader in = new BufferedReader(new FileReader("tempreport.txt"));
+                String dataLine = in.readLine();
+                int yaxis2 = 700;
+                while(dataLine != null) {
+                    dataLine = dataLine.replaceAll("\t", "          ");//fix pdfbox not support the tab brrr
+                    content2.beginText();
+                    if(dataLine.equals("==========================================")) {
+                        content2.setFont(PDType1Font.HELVETICA_BOLD, 11);
+                    } else {
+                        content2.setFont(PDType1Font.HELVETICA, 11);
+                    }
+                    content2.newLineAtOffset(30, yaxis2);
+                    content2.showText(dataLine);
+                    content2.endText();
+                    dataLine = in.readLine();
+                    yaxis2 -= 15;
+                }
+                in.close();
+                tempfile.delete();
+            }catch (IOException ioe) {
+                System.err.println(ioe.getMessage());
+            }
+            content.close();
+            content2.close(); //close the writing process
+            String savefile = "report_" + month + "_" + reportYear + ".pdf";
+            doc.save(savefile);
             doc.close();
-
-        } catch(IOException | PdfException ioe) {
-            System.err.println("Something went wrong!");
+            System.out.println("\nReport generated on " + savefile);
+        }catch(IOException ioe){
+            System.err.println(ioe.getMessage());
         }
 
+    
     }
 
 }

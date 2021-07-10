@@ -286,3 +286,30 @@
     //         System.out.println("Category not exist!");
     //     }
     // }
+
+        // //listing all proudcts
+    // static void listAllProducts() {
+    //     System.out.print("\u000C");
+    //     String [][] products = Product.getAllProducts();
+    //     System.out.println("-------------LISTING OF PRODUCT---------------");
+    //     System.out.println("\nID\tNAME");
+    //     System.out.println("==\t==========");
+
+    //     for(int i=0;i<products.length;i++) {
+
+    //         if(products[i][0] != null) {
+    //             System.out.println(products[i][0]+"\t"+products[i][1]);
+    //         }
+    //    }
+    // }
+
+    // //listing all categories
+    // static void listAllCategories() {
+    //     System.out.print("\u000C");
+    //     Category [] data = Category.getAllCategories();
+    //     int length = ItemsInfo.checkLength(data);
+    
+    //     for(int i=0; i<length; i++) {
+    //         System.out.println(data[i].toString());
+    //     }
+    // }

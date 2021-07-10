@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 public class Main {
     
+    //head banner
     static void bannerCompany(Company data) {
 
         System.out.println("███╗░░░███╗██╗███╗░░░███╗░██████╗");
@@ -26,6 +27,7 @@ public class Main {
         
     }
 
+    //display product menu
     static void productMenu() {
         System.out.print("\u000C");
         Company data = verifyCompany();
@@ -75,6 +77,7 @@ public class Main {
         
     }
     
+    //display category menu
     static void categoryMenu() {
         System.out.print("\u000C");
         Company data = verifyCompany();
@@ -124,6 +127,7 @@ public class Main {
         
     }
 
+    //display main menu
     static void mainMenu(Company data) {
          //display main menu
         System.out.print("\u000C");
@@ -132,7 +136,6 @@ public class Main {
         System.out.println("\n[1]  Category Section");
         System.out.println("[2]  Product Section");
         System.out.println("[3]  Generate Report");
-        System.out.println("[4]  DEBUG MENU <- CODE TESTING");
         System.out.println("[99] Exit Program");
 
         int choice;
@@ -156,11 +159,6 @@ public class Main {
                     flag = false;
                     //report menu here
                     testReport(data);
-                    break;
-                case 4:
-                    flag = false;
-                    //report menu here
-                    // displayDEBUG(data);;//testing purpose
                     break;
                 case 99:
                     flag = false;
@@ -191,6 +189,7 @@ public class Main {
        }
     }
 
+    //for press any key to continue.... hehe
     static void pressAnyKey() {
         System.out.println("Press Enter key to continue...");
         try
@@ -202,13 +201,17 @@ public class Main {
         }  
     }
 
+    //add a new category to the system
     static void addCategories() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
         String id,name;
         boolean choice;
 
-        System.out.println("--------------ADD CATEGORY---------------");
+        System.out.println("─█▀▀█ ░█▀▀▄ ░█▀▀▄ 　 ░█▀▀█ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ ░█▀▀█ ░█▀▀▀█ ░█▀▀█ ░█──░█ ");
+        System.out.println("░█▄▄█ ░█─░█ ░█─░█ 　 ░█─── ░█▄▄█ ─░█── ░█▀▀▀ ░█─▄▄ ░█──░█ ░█▄▄▀ ░█▄▄▄█ ");
+        System.out.println("░█─░█ ░█▄▄▀ ░█▄▄▀ 　 ░█▄▄█ ░█─░█ ─░█── ░█▄▄▄ ░█▄▄█ ░█▄▄▄█ ░█─░█ ──░█──");
+        viewSortedAll();
         System.out.print("\nCategory ID: ");
         id = in.nextLine();
 
@@ -229,13 +232,17 @@ public class Main {
        }
     }
 
+    //delete a category record
     static void deleteCategories() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
         String id;
         boolean choice;
 
-        System.out.println("--------------DELETE CATEGORY---------------");
+        System.out.println("░█▀▀▄ ░█▀▀▀ ░█─── ░█▀▀▀ ▀▀█▀▀ ░█▀▀▀ 　 ░█▀▀█ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ ░█▀▀█ ░█▀▀▀█ ░█▀▀█ ░█──░█ ");
+        System.out.println("░█─░█ ░█▀▀▀ ░█─── ░█▀▀▀ ─░█── ░█▀▀▀ 　 ░█─── ░█▄▄█ ─░█── ░█▀▀▀ ░█─▄▄ ░█──░█ ░█▄▄▀ ░█▄▄▄█");
+        System.out.println("░█▄▄▀ ░█▄▄▄ ░█▄▄█ ░█▄▄▄ ─░█── ░█▄▄▄ 　 ░█▄▄█ ░█─░█ ─░█── ░█▄▄▄ ░█▄▄█ ░█▄▄▄█ ░█─░█ ──░█──");
+        viewSortedAll();
         System.out.print("\nCategory ID: ");
         id = in.nextLine();
 
@@ -252,13 +259,17 @@ public class Main {
        }
     }
 
+    //edit and update a existed categories
     static void updateCategories() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
         String id,name;
         boolean choice;
 
-        System.out.println("--------------EDIT CATEGORY---------------");
+        System.out.println("░█▀▀▀ ░█▀▀▄ ▀█▀ ▀▀█▀▀ 　 ░█▀▀█ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ ░█▀▀█ ░█▀▀▀█ ░█▀▀█ ░█──░█ ");
+        System.out.println("░█▀▀▀ ░█─░█ ░█─ ─░█── 　 ░█─── ░█▄▄█ ─░█── ░█▀▀▀ ░█─▄▄ ░█──░█ ░█▄▄▀ ░█▄▄▄█ ");
+        System.out.println("░█▄▄▄ ░█▄▄▀ ▄█▄ ─░█── 　 ░█▄▄█ ░█─░█ ─░█── ░█▄▄▄ ░█▄▄█ ░█▄▄▄█ ░█─░█ ──░█──");
+        viewSortedAll();
         System.out.print("\nCategory ID: ");
         id = in.nextLine();
 
@@ -287,6 +298,7 @@ public class Main {
         }
     }
 
+    //add a new product to the system
     static void addProducts() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
@@ -295,7 +307,10 @@ public class Main {
         int quantity,bulkValue;
         Category catData = null;
 
-        System.out.println("--------------ADD NEW PRODUCT---------------");
+        System.out.println("─█▀▀█ ░█▀▀▄ ░█▀▀▄ 　 ░█▀▀█ ░█▀▀█ ░█▀▀▀█ ░█▀▀▄ ░█─░█ ░█▀▀█ ▀▀█▀▀ ");
+        System.out.println("░█▄▄█ ░█─░█ ░█─░█ 　 ░█▄▄█ ░█▄▄▀ ░█──░█ ░█─░█ ░█─░█ ░█─── ─░█── ");
+        System.out.println("░█─░█ ░█▄▄▀ ░█▄▄▀ 　 ░█─── ░█─░█ ░█▄▄▄█ ░█▄▄▀ ─▀▄▄▀ ░█▄▄█ ─░█──");
+        viewSortedAll();
         System.out.print("\nProduct ID: ");
         id = in.nextLine();
 
@@ -336,13 +351,17 @@ public class Main {
        }
     }
 
+    //delete a product and all the records by inputting id
     static void deleteProducts() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
         String id;
         boolean choice;
-
-        System.out.println("--------------DELETE PRODUCT---------------");
+        
+        System.out.println("░█▀▀▄ ░█▀▀▀ ░█─── ░█▀▀▀ ▀▀█▀▀ ░█▀▀▀ 　 ░█▀▀█ ░█▀▀█ ░█▀▀▀█ ░█▀▀▄ ░█─░█ ░█▀▀█ ▀▀█▀▀ ");
+        System.out.println("░█─░█ ░█▀▀▀ ░█─── ░█▀▀▀ ─░█── ░█▀▀▀ 　 ░█▄▄█ ░█▄▄▀ ░█──░█ ░█─░█ ░█─░█ ░█─── ─░█── ");
+        System.out.println("░█▄▄▀ ░█▄▄▄ ░█▄▄█ ░█▄▄▄ ─░█── ░█▄▄▄ 　 ░█─── ░█─░█ ░█▄▄▄█ ░█▄▄▀ ─▀▄▄▀ ░█▄▄█ ─░█──");
+        viewSortedAll();
         System.out.print("\nProduct ID: ");
         id = in.nextLine();
 
@@ -360,13 +379,17 @@ public class Main {
        }
     }
 
+    //updating product for every month
     static void updateProducts() {
         System.out.print("\u000C");//to clear the terminal :)
         Scanner in = new Scanner(System.in);
         String id,updatedate;
         int quantity;
 
-        System.out.println("--------------UPDATE PRODUCT STOCKS---------------");
+        System.out.println("░█─░█ ░█▀▀█ ░█▀▀▄ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ 　 ░█▀▀█ ░█▀▀█ ░█▀▀▀█ ░█▀▀▄ ░█─░█ ░█▀▀█ ▀▀█▀▀ ");
+        System.out.println("░█─░█ ░█▄▄█ ░█─░█ ░█▄▄█ ─░█── ░█▀▀▀ 　 ░█▄▄█ ░█▄▄▀ ░█──░█ ░█─░█ ░█─░█ ░█─── ─░█── ");
+        System.out.println("─▀▄▄▀ ░█─── ░█▄▄▀ ░█─░█ ─░█── ░█▄▄▄ 　 ░█─── ░█─░█ ░█▄▄▄█ ░█▄▄▀ ─▀▄▄▀ ░█▄▄█ ─░█───");
+        viewSortedAll();
         System.out.print("\nProduct ID: ");
         id = in.nextLine();
 
@@ -394,11 +417,16 @@ public class Main {
         }
     }
 
+    //searching products by inputiing id
     static void searchingProducts() {
         System.out.print("\u000C");
         Scanner in = new Scanner(System.in);
         String id;
-        System.out.println("--------------------SEARCH PRODUCT----------------------");
+
+        System.out.println("░█▀▀▀█ ░█▀▀▀ ─█▀▀█ ░█▀▀█ ░█▀▀█ ░█─░█ 　 ░█▀▀█ ░█▀▀█ ░█▀▀▀█ ░█▀▀▄ ░█─░█ ░█▀▀█ ▀▀█▀▀ ");
+        System.out.println("─▀▀▀▄▄ ░█▀▀▀ ░█▄▄█ ░█▄▄▀ ░█─── ░█▀▀█ 　 ░█▄▄█ ░█▄▄▀ ░█──░█ ░█─░█ ░█─░█ ░█─── ─░█──  ");
+        System.out.println("░█▄▄▄█ ░█▄▄▄ ░█─░█ ░█─░█ ░█▄▄█ ░█─░█ 　 ░█─── ░█─░█ ░█▄▄▄█ ░█▄▄▀ ─▀▄▄▀ ░█▄▄█ ─░█──");
+        viewSortedAll();
         System.out.print("\nEnter Product ID [eg:AX119]: ");
         id = in.nextLine();
 
@@ -424,7 +452,11 @@ public class Main {
         System.out.print("\u000C");
         Scanner in = new Scanner(System.in);
         String id;
-        System.out.println("--------------------SEARCH CATEGORY----------------------");
+
+        System.out.println("░█▀▀▀█ ░█▀▀▀ ─█▀▀█ ░█▀▀█ ░█▀▀█ ░█─░█ 　 ░█▀▀█ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ ░█▀▀█ ░█▀▀▀█ ░█▀▀█ ░█──░█ ");
+        System.out.println("─▀▀▀▄▄ ░█▀▀▀ ░█▄▄█ ░█▄▄▀ ░█─── ░█▀▀█ 　 ░█─── ░█▄▄█ ─░█── ░█▀▀▀ ░█─▄▄ ░█──░█ ░█▄▄▀ ░█▄▄▄█  ");
+        System.out.println("░█▄▄▄█ ░█▄▄▄ ░█─░█ ░█─░█ ░█▄▄█ ░█─░█ 　 ░█▄▄█ ░█─░█ ─░█── ░█▄▄▄ ░█▄▄█ ░█▄▄▄█ ░█─░█ ──░█──");
+        viewSortedAll();
         System.out.print("\nEnter Category ID [eg:AX119]: ");
         id = in.nextLine();
 
@@ -438,53 +470,11 @@ public class Main {
         categoryMenu();
     }
 
-
-    static void listAllProducts() {
-        System.out.print("\u000C");
-        String [][] products = Product.getAllProducts();
-        System.out.println("-------------LISTING OF PRODUCT---------------");
-        System.out.println("\nID\tNAME");
-        System.out.println("==\t==========");
-
-        for(int i=0;i<products.length;i++) {
-
-            if(products[i][0] != null) {
-                System.out.println(products[i][0]+"\t"+products[i][1]);
-            }
-       }
-    }
-
-    static void listAllCategories() {
-        System.out.print("\u000C");
-        Category [] data = Category.getAllCategories();
-        int length = ItemsInfo.checkLength(data);
-    
-        for(int i=0; i<length; i++) {
-            System.out.println(data[i].toString());
-        }
-    }
-
-    static String [] sorting(String [] arr) {
-        String [] sorted = new String[arr.length];
-        String temp;
-
-        for(int i=0;i<arr.length;i++) {
-           
-            for(int j=i+1;j<arr.length;j++) {
-
-                if(arr[i].compareTo(arr[j])>0) {
-                    temp = arr[i];
-                    arr[i] = arr[j];
-                    arr[j] = temp;
-                }
-            } 
-        }
-
-        return arr;
-    }
-
+    //diplaying sorted list
     static void viewSortedAll() {
-        System.out.print("\u000C");
+        System.out.println("=========================================");
+        System.out.println("LISTING ALL CATEGORIES AND PRODUCTS");
+        System.out.println("=========================================");
         Category [] catList = Category.getAllCategories();
         int length = ItemsInfo.checkLength(catList);
         String [] list = new String[length];
@@ -496,7 +486,7 @@ public class Main {
             list[i] = catList[i].getCategoryID();
         }
 
-        Catsorted = sorting(list);
+        Catsorted = ItemsInfo.sorting(list);
         //display the sorted
         for(int j=0;j<length;j++) {
             System.out.println("\nCategory:"+ "[" +Catsorted[j] + "]"+ Category.search(Catsorted[j], null).getCategoryName());
@@ -510,32 +500,68 @@ public class Main {
                 }
             }
         }
+        System.out.println("=========================================");
     }
 
 
+    
+    //generate and write a report
     static void testReport(Company compInfo) {
+        System.out.print("\u000C");
         Category [] catList = Category.getAllCategories();
         String [][] prodList = Product.getAllProducts();
-        int year = 2021;
+        Scanner in = new Scanner(System.in);
 
+        System.out.println("░█▀▀█ ░█▀▀▀ ░█▄─░█ ░█▀▀▀ ░█▀▀█ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ 　 ░█▀▀█ ░█▀▀▀ ░█▀▀█ ░█▀▀▀█ ░█▀▀█ ▀▀█▀▀ ");
+        System.out.println("░█─▄▄ ░█▀▀▀ ░█░█░█ ░█▀▀▀ ░█▄▄▀ ░█▄▄█ ─░█── ░█▀▀▀ 　 ░█▄▄▀ ░█▀▀▀ ░█▄▄█ ░█──░█ ░█▄▄▀ ─░█── ");
+        System.out.println("░█▄▄█ ░█▄▄▄ ░█──▀█ ░█▄▄▄ ░█─░█ ░█─░█ ─░█── ░█▄▄▄ 　 ░█─░█ ░█▄▄▄ ░█─── ░█▄▄▄█ ░█─░█ ─░█──");
+        int year = 0,choice,month = 0;
+        System.out.println("\n[1] Yearly Report");
+        System.out.println("[2] Monthly Report");
+        System.out.println("[99] Back to Main Menu");
+
+        boolean flag = true;
+        while(flag) {
+            System.out.print("Enter choice: ");
+            choice = Integer.parseInt(in.nextLine());
+
+            if(choice == 1) {
+                System.out.print("Enter year: ");
+                year = Integer.parseInt(in.nextLine());
+                flag = false;
+            } else if(choice == 2){
+                System.out.print("Enter year: ");
+                year = Integer.parseInt(in.nextLine());
+
+                System.out.println("Enter month: ");
+                month = Integer.parseInt(in.nextLine());
+                flag = false;
+            } else if(choice == 99) {
+                mainMenu(compInfo);
+                flag = false;
+            } else {
+                System.out.println("Invalid choice");
+            }
+        }
         Report reportTest = new Report(compInfo,catList,prodList,year);
-        System.out.println("--------------------------------TEST REPORT------------------------");
         viewSortedAll();
-        reportTest.generateReportTest(0);
-        reportTest.generate2pdf();
-
+        reportTest.generateReportTest(month);
+        reportTest.generate2pdf(month);
+        pressAnyKey();
+        mainMenu(compInfo);
     }
-    //---------------------------------------------------------------------------------------
 
-
+    //registering a company for fresh start/new user
     static Company registerCompany() {
 
         String companyName,companyPhone,companyAddress,businessNumber;
         Scanner in = new Scanner(System.in);
 
-        System.out.println("--------------------NEW USER COMPANY REGISTRATION----------------------");
+        System.out.println("░█▀▀█ ░█▀▀▀█ ░█▀▄▀█ ░█▀▀█ ─█▀▀█ ░█▄─░█ ░█──░█ 　 ░█▀▀█ ░█▀▀▀ ░█▀▀█ ▀█▀ ░█▀▀▀█ ▀▀█▀▀ ░█▀▀▀ ░█▀▀█ ");
+        System.out.println("░█─── ░█──░█ ░█░█░█ ░█▄▄█ ░█▄▄█ ░█░█░█ ░█▄▄▄█ 　 ░█▄▄▀ ░█▀▀▀ ░█─▄▄ ░█─ ─▀▀▀▄▄ ─░█── ░█▀▀▀ ░█▄▄▀");
+        System.out.println("░█▄▄█ ░█▄▄▄█ ░█──░█ ░█─── ░█─░█ ░█──▀█ ──░█── 　 ░█─░█ ░█▄▄▄ ░█▄▄█ ▄█▄ ░█▄▄▄█ ─░█── ░█▄▄▄ ░█─░█");
         
-        System.out.print("Company Name: ");
+        System.out.print("\nCompany Name: ");
         companyName = in.nextLine();
 
         System.out.print("Company Phone: ");
@@ -557,7 +583,7 @@ public class Main {
             wrt.close();
 
         } catch (IOException ioe) {
-            System.err.println("Something went wrong!");
+            System.err.println("Something went wrong!\n" + ioe.getMessage());
         }
         System.out.print("\u000C");//to clear the terminal :) 
         return compData;
@@ -596,11 +622,13 @@ public class Main {
                     in.close();
 
                 } else {
+                    System.out.println("NO COMPANY INFO DETECTED!...");
+                    tunggu(3000);
                     compData = registerCompany();
                 }
 
             } catch (IOException ioe) {
-                System.err.print("Something went Wrong!");
+                System.err.print("Something went Wrong!\n" + ioe.getMessage());
             }
 
         } else {
@@ -614,6 +642,7 @@ public class Main {
 
         //verify the user registered the company or not
         Company companyDetails = verifyCompany();
+        //execute the main menu
         mainMenu(companyDetails);
     }
 }

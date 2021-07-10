@@ -38,4 +38,8 @@ public class Company {
     public String getCompanyAddress() {return companyAddress;}
     public String getBusinessNumber() {return businessNumber;}
 
+    public String toString() {
+        return "\nCompany Name: " + companyName + "\nCompany Phone: " + companyPhone + "\nCompany Address: " + companyAddress + "\nBusiness Number: " + businessNumber;
+    }
+
 }
