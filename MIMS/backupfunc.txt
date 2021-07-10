@@ -1,0 +1,315 @@
+    // static void calculateAverage() {
+    //     System.out.print("\u000C");
+    //     Scanner in = new Scanner(System.in);
+    //     Category [] data = Category.getAllCategories();
+    //     int length = ItemsInfo.checkLength(data);
+    //     int totalProduction = 0;
+    //     int month,year;
+    //     double average;
+        
+    //     System.out.print("Enter month: ");
+    //     month = Integer.parseInt(in.nextLine());
+    //     System.out.print("Enter year: ");
+    //     year = Integer.parseInt(in.nextLine());
+
+    //     for(int i=0; i<length; i++) {
+    //         totalProduction += data[i].calcQuantity(month, year);
+    //     }
+
+    //     average = totalProduction/length;
+    //     System.out.println("Total Categories: " + length);
+    //     System.out.println("Total Production: " + totalProduction);
+    //     System.out.println("Average production: " + average);
+    // }
+
+    // static int calcBulk(String id,int month,int year) {
+    //     int bulk=0,bulkVal=0,tempStocks=0,mm,yy;
+    //     String tempDate;
+    //     Product [] prodResult = Product.searchPro(id, null);
+    //     int length = ItemsInfo.checkLength(prodResult);
+        
+    //     if(month > 0) {
+    //         for(int i=0;i<length;i++){ //searching for specific month and year
+    //             tempDate = prodResult[i].getUpdateDate();
+
+    //             String [] parts = tempDate.split("/",3);
+    //             mm = Integer.parseInt(parts[1]);
+    //             yy = Integer.parseInt(parts[2]);
+
+    //             if(mm == month && yy == year){
+    //                 tempStocks = prodResult[i].getProductStocks();
+    //                 bulkVal = prodResult[i].getBulkValue();
+    //                 break;
+    //             }
+    //         }
+    //     } else if(month == 0) {
+    //         int yearCount = 0;
+    //         for(int i=0;i<length;i++){ //searching for specific year
+    //             tempDate = prodResult[i].getUpdateDate();
+
+    //             String [] parts = tempDate.split("/",3);
+    //             yy = Integer.parseInt(parts[2]);
+
+    //             if(yy == year){
+    //                 yearCount++;
+    //             }
+    //         }
+    //         if (yearCount == 0) {
+    //             return 0;
+    //         } else {
+    //             tempStocks = prodResult[yearCount-1].getProductStocks();
+    //             bulkVal = prodResult[yearCount-1].getBulkValue();
+    //         }
+            
+    //     }
+    //     //counting the bulk
+    //     if(bulkVal == 0) {
+    //         bulk = 0;
+    //     }else {
+    //         while(tempStocks >= bulkVal ) {
+    //             bulk++;
+    //             tempStocks -= bulkVal;
+    //         }
+    //     }
+    //     return bulk;
+    // }
+
+    // static void bulkList() {
+    //     System.out.print("\u000C");
+    //     Scanner in = new Scanner(System.in);
+    //     int month,year;
+    //     System.out.println("--------------------DEBUG CALCULATE BULK VALUE ALL PRODUCTS----------------------");
+    //     String [][] prodList = Product.getAllProducts(); //get the product id and name list
+    //     String id;
+    //     int bulk;
+
+    //     System.out.print("Enter month: ");
+    //     month = Integer.parseInt(in.nextLine());
+
+    //     System.out.print("Enter year: ");
+    //     year = Integer.parseInt(in.nextLine());
+
+    //     for(int i=0;i<prodList.length;i++) {
+
+    //         if(prodList[i][0] != null) {
+    //             id = prodList[i][0];
+    //             bulk = calcBulk(id, month, year);
+    //             System.out.println(id + " : " + bulk);
+    //         }
+    //    }
+    // }
+
+    // static String [] findLowestStocks(String id) { //receive category id
+    //     String [][] prodList = Product.getAllProducts();
+    //     Product [] prodData = null;
+    //     int month = 0;//change this laterr
+    //     int year = 2021;//change this laterr
+    //     int stocks = 0;
+    //     int lowest = -1;
+    //     int yearCount = 0;
+    //     String lowid = null;
+    //     String tempId = null;
+    //     String [] lowData = new String [2];
+
+    //     for(int i=0;i<prodList.length;i++) {
+            
+    //         if(prodList[i][0] != null) {
+    //             String pid = prodList[i][0];
+    //             prodData = Product.searchPro(pid, null);
+    //             int length = ItemsInfo.checkLength(prodData);
+
+    //             for(int j=0;j<length;j++) {
+    //                 String category = prodData[j].getCategoryID();
+    //                 String date = prodData[j].getUpdateDate();
+    //                 String [] parts = date.split("/",3);
+    //                 int mm = Integer.parseInt(parts[1]);
+    //                 int yy = Integer.parseInt(parts[2]);
+
+    //                 if(category.equalsIgnoreCase(id) && year == yy ) {
+    //                     if (month == 0) {
+    //                         yearCount++;
+    //                     } else if(month > 0){
+    //                         if(month == mm) {
+    //                             stocks = prodData[j].getProductStocks();
+    //                             lowid = prodData[j].getProductID();
+    //                             break;
+    //                         }
+    //                     }else {
+    //                         stocks = 0;
+    //                         lowid = null;
+    //                     }
+    //                 } else {
+    //                     continue;
+    //                 }
+    //             }
+    //             if(month == 0) {
+    //                 if(yearCount == 0) {
+    //                     continue;
+    //                 } else {
+    //                     stocks = prodData[yearCount-1].getProductStocks();
+    //                     tempId = prodData[yearCount-1].getProductID();
+    //                 } 
+    //             }
+                
+    //             //comparing the lowest
+    //             if(lowest<0) {
+    //                 lowest = stocks;
+    //                 lowid = tempId;
+    //             } else if (stocks <= lowest) {
+    //                 lowest = stocks;
+    //                 lowid = tempId;
+    //             }
+    //          } else {
+    //              continue;
+    //          }
+    //          yearCount = 0;
+    //     }
+    //     lowData[0] = lowid;
+    //     lowData[1] = Integer.toString(lowest);
+    //     return lowData;
+    // }
+
+    // static void viewLowest() {
+    //     System.out.print("\u000C");
+    //     System.out.println("------------------DEBUG CHECK LOWEST STOCKS EACH CATEGORY---------------");
+    //     Category [] catList = Category.getAllCategories();
+    //     int length = ItemsInfo.checkLength(catList);
+    //     for(int i=0;i<length;i++) {
+    //         String [] data = findLowestStocks(catList[i].getCategoryID(),2);
+    //         String pname = data[0];
+    //         int stocks = Integer.parseInt(data[1]);
+
+    //         if(pname == null) {
+    //             pname = "NO RECORD";
+    //         }
+    //         System.out.println(catList[i].getCategoryName()+":"+ pname + "=" + stocks);
+    //     }
+    // }
+
+    // static String [] findHighestProduction(String id) {
+    //     String [][] prodList = Product.getAllProducts();
+    //     Product [] prodData = null;
+    //     int month = 0;//change this laterr
+    //     int year = 2012;//change this laterr
+    //     int tempProduction = 0;
+    //     int lowest = -1;
+    //     int yearCount = 0;
+    //     String lowid = null;
+    //     String tempId = null;
+    //     String [] lowData = new String [2];
+
+    //     for(int i=0;i<prodList.length;i++){
+            
+    //         if(prodList[i][0] != null) {
+    //             String pid = prodList[i][0];
+    //             prodData = Product.searchPro(pid, null);
+    //             int length = ItemsInfo.checkLength(prodData);
+
+    //             for(int j=0;j<length;j++) {
+    //                 String category = prodData[j].getCategoryID();
+    //                 String date = prodData[j].getUpdateDate();
+    //                 String [] parts = date.split("/",3);
+    //                 int mm = Integer.parseInt(parts[1]);
+    //                 int yy = Integer.parseInt(parts[2]);
+
+    //                 if(category.equalsIgnoreCase(id) && year == yy) {
+    //                     if(month == 0) {
+    //                         tempProduction += prodData[j].getProductQuantity();
+    //                         tempId = pid;
+    //                     }else if(month > 0){
+    //                         if(month == mm) {
+    //                             System.out.println(tempProduction);
+    //                             tempProduction = prodData[j].getProductQuantity();
+    //                             tempId = pid;
+    //                             break;
+    //                         }
+    //                     }
+    //                 }
+    //                 if(lowest < 0) {
+    //                     lowest = tempProduction;
+    //                     lowid = tempId;
+    //                 } else if(tempProduction >= lowest) {
+    //                     lowest = tempProduction;
+    //                     lowid = tempId;
+    //                 }
+    //             }
+    //         } else {
+    //             continue;
+    //         }
+    //         if(month == 0) {
+    //             tempProduction = 0;
+    //         }
+    //     }
+    //     lowData[0] = lowid;
+    //     lowData[1] = Integer.toString(lowest);
+    //     return lowData;
+    // }
+
+    // static void viewHighest() {
+    //     System.out.print("\u000C");
+    //     System.out.println("------------------DEBUG CHECK HIGHEST PRODUCTION EACH CATEGORY---------------");
+    //     Category [] catList = Category.getAllCategories();
+    //     int length = ItemsInfo.checkLength(catList);
+
+    //     for(int i=0;i<length;i++) {
+    //         String [] data = findHighestProduction(catList[i].getCategoryID());
+    //         String pname = data[0];
+    //         int stocks = Integer.parseInt(data[1]);
+
+    //         if(pname == null) {
+    //             pname = "NO RECORD";
+    //         }
+    //         System.out.println(catList[i].getCategoryName()+":"+ pname + "=" + stocks);
+    //     }
+    // }
+
+ // static void calculateCategories() {
+    //     System.out.print("\u000C");
+    //     Scanner in = new Scanner(System.in);
+    //     String id;
+    //     int month,year;//testing purpose
+    //     System.out.println("--------------------DEBUG CALCULATE CATEGORIES BY MONTH----------------------");
+    //     System.out.print("\nEnter Category ID [eg:AX119]: ");
+    //     id = in.nextLine();
+
+    //     Category data = Category.search(id,null);
+    //     if(data != null) {
+    //         System.out.print("Enter month: ");
+    //         month = Integer.parseInt(in.nextLine());
+    //         System.out.print("Enter year: ");
+    //         year = Integer.parseInt(in.nextLine());
+    //         int stocks = data.calcQuantity(month, year);
+    //         System.out.println("\n" + data.toString());
+    //         System.out.println("Total Production: " + stocks);
+            
+    //     } else {
+    //         System.out.println("Category not exist!");
+    //     }
+    // }
+
+        // //listing all proudcts
+    // static void listAllProducts() {
+    //     System.out.print("\u000C");
+    //     String [][] products = Product.getAllProducts();
+    //     System.out.println("-------------LISTING OF PRODUCT---------------");
+    //     System.out.println("\nID\tNAME");
+    //     System.out.println("==\t==========");
+
+    //     for(int i=0;i<products.length;i++) {
+
+    //         if(products[i][0] != null) {
+    //             System.out.println(products[i][0]+"\t"+products[i][1]);
+    //         }
+    //    }
+    // }
+
+    // //listing all categories
+    // static void listAllCategories() {
+    //     System.out.print("\u000C");
+    //     Category [] data = Category.getAllCategories();
+    //     int length = ItemsInfo.checkLength(data);
+    
+    //     for(int i=0; i<length; i++) {
+    //         System.out.println(data[i].toString());
+    //     }
+    // }

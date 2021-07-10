@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.util.StringTokenizer;
-import java.util.function.IntPredicate;
 //normal stuff
 import java.util.Scanner;
 
 public class Main {
     
+    //head banner
     static void bannerCompany(Company data) {
 
         System.out.println("███╗░░░███╗██╗███╗░░░███╗░██████╗");
@@ -27,8 +27,10 @@ public class Main {
         
     }
 
-    static void productMenu(Company data) {
+    //display product menu
+    static void productMenu() {
         System.out.print("\u000C");
+        Company data = verifyCompany();
         bannerCompany(data);
         Scanner in = new Scanner(System.in);
         System.out.println("\n[1]  Add Product");
@@ -75,8 +77,10 @@ public class Main {
         
     }
     
-    static void categoryMenu(Company data) {
+    //display category menu
+    static void categoryMenu() {
         System.out.print("\u000C");
+        Company data = verifyCompany();
         bannerCompany(data);
         Scanner in = new Scanner(System.in);
         System.out.println("\n[1]  Add Category");
@@ -123,6 +127,7 @@ public class Main {
         
     }
 
+    //display main menu
     static void mainMenu(Company data) {
          //display main menu
         System.out.print("\u000C");
@@ -131,7 +136,6 @@ public class Main {
         System.out.println("\n[1]  Category Section");
         System.out.println("[2]  Product Section");
         System.out.println("[3]  Generate Report");
-        System.out.println("[4]  DEBUG MENU <- CODE TESTING");
         System.out.println("[99] Exit Program");
 
         int choice;
@@ -144,21 +148,17 @@ public class Main {
                 case 1:
                     flag = false;
                     //category menu here
-                    categoryMenu(data);
+                    categoryMenu();
                     break;
                 case 2:
                     flag = false;
                     //product menu here
-                    productMenu(data);
+                    productMenu();
                     break;
                 case 3:
                     flag = false;
                     //report menu here
-                    break;
-                case 4:
-                    flag = false;
-                    //report menu here
-                    displayDEBUG(data);;//testing purpose
+                    testReport(data);
                     break;
                 case 99:
                     flag = false;
@@ -181,23 +181,37 @@ public class Main {
         return flag;
     }
 
-    static int checkLength(Object [] array) { //this one for checking actual length of array
-        int count = 0;
-        for(Object myobj : array) { //using for-loop for code optimizinggggg and simple wohoo
-            if(myobj != null) {
-                count++;
-            }
-        }
-        return count;
+    static void tunggu(int ms) {
+        try {
+            Thread.sleep(3000);
+        }catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+       }
     }
 
+    //for press any key to continue.... hehe
+    static void pressAnyKey() {
+        System.out.println("Press Enter key to continue...");
+        try
+        {
+            System.in.read();
+        }  
+        catch(Exception e){
+            System.err.println("went wrong!");
+        }  
+    }
+
+    //add a new category to the system
     static void addCategories() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
         String id,name;
         boolean choice;
 
-        System.out.println("--------------ADD CATEGORY---------------");
+        System.out.println("─█▀▀█ ░█▀▀▄ ░█▀▀▄ 　 ░█▀▀█ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ ░█▀▀█ ░█▀▀▀█ ░█▀▀█ ░█──░█ ");
+        System.out.println("░█▄▄█ ░█─░█ ░█─░█ 　 ░█─── ░█▄▄█ ─░█── ░█▀▀▀ ░█─▄▄ ░█──░█ ░█▄▄▀ ░█▄▄▄█ ");
+        System.out.println("░█─░█ ░█▄▄▀ ░█▄▄▀ 　 ░█▄▄█ ░█─░█ ─░█── ░█▄▄▄ ░█▄▄█ ░█▄▄▄█ ░█─░█ ──░█──");
+        viewSortedAll();
         System.out.print("\nCategory ID: ");
         id = in.nextLine();
 
@@ -210,18 +224,25 @@ public class Main {
 
        if(choice) {
            data.add(); //do the add product job
+           System.out.println("Category added successfully!");
+           tunggu(3000);
+           categoryMenu();
        }else {
            addCategories(); //call this function itself 
        }
     }
 
+    //delete a category record
     static void deleteCategories() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
         String id;
         boolean choice;
 
-        System.out.println("--------------DELETE CATEGORY---------------");
+        System.out.println("░█▀▀▄ ░█▀▀▀ ░█─── ░█▀▀▀ ▀▀█▀▀ ░█▀▀▀ 　 ░█▀▀█ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ ░█▀▀█ ░█▀▀▀█ ░█▀▀█ ░█──░█ ");
+        System.out.println("░█─░█ ░█▀▀▀ ░█─── ░█▀▀▀ ─░█── ░█▀▀▀ 　 ░█─── ░█▄▄█ ─░█── ░█▀▀▀ ░█─▄▄ ░█──░█ ░█▄▄▀ ░█▄▄▄█");
+        System.out.println("░█▄▄▀ ░█▄▄▄ ░█▄▄█ ░█▄▄▄ ─░█── ░█▄▄▄ 　 ░█▄▄█ ░█─░█ ─░█── ░█▄▄▄ ░█▄▄█ ░█▄▄▄█ ░█─░█ ──░█──");
+        viewSortedAll();
         System.out.print("\nCategory ID: ");
         id = in.nextLine();
 
@@ -230,18 +251,25 @@ public class Main {
 
        if(choice) {
             Category.delete(id); //do the delete process; //do the add product job
+            System.out.println("Category deleted successfully!");
+            tunggu(3000);
+            categoryMenu();
        }else {
            deleteCategories(); //call this function itself 
        }
     }
 
+    //edit and update a existed categories
     static void updateCategories() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
         String id,name;
         boolean choice;
 
-        System.out.println("--------------EDIT CATEGORY---------------");
+        System.out.println("░█▀▀▀ ░█▀▀▄ ▀█▀ ▀▀█▀▀ 　 ░█▀▀█ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ ░█▀▀█ ░█▀▀▀█ ░█▀▀█ ░█──░█ ");
+        System.out.println("░█▀▀▀ ░█─░█ ░█─ ─░█── 　 ░█─── ░█▄▄█ ─░█── ░█▀▀▀ ░█─▄▄ ░█──░█ ░█▄▄▀ ░█▄▄▄█ ");
+        System.out.println("░█▄▄▄ ░█▄▄▀ ▄█▄ ─░█── 　 ░█▄▄█ ░█─░█ ─░█── ░█▄▄▄ ░█▄▄█ ░█▄▄▄█ ░█─░█ ──░█──");
+        viewSortedAll();
         System.out.print("\nCategory ID: ");
         id = in.nextLine();
 
@@ -257,15 +285,20 @@ public class Main {
             if(choice) {
                 Category newData = new Category(id,name);
                 newData.update();//do the update category job
+                tunggu(3000);
+                categoryMenu();
             }else {
                 updateCategories();//call this function itself 
             }
 
         } else {
             System.out.println("Category ID not found!");
+            pressAnyKey();
+            updateCategories();
         }
     }
 
+    //add a new product to the system
     static void addProducts() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
@@ -274,7 +307,10 @@ public class Main {
         int quantity,bulkValue;
         Category catData = null;
 
-        System.out.println("--------------ADD NEW PRODUCT---------------");
+        System.out.println("─█▀▀█ ░█▀▀▄ ░█▀▀▄ 　 ░█▀▀█ ░█▀▀█ ░█▀▀▀█ ░█▀▀▄ ░█─░█ ░█▀▀█ ▀▀█▀▀ ");
+        System.out.println("░█▄▄█ ░█─░█ ░█─░█ 　 ░█▄▄█ ░█▄▄▀ ░█──░█ ░█─░█ ░█─░█ ░█─── ─░█── ");
+        System.out.println("░█─░█ ░█▄▄▀ ░█▄▄▀ 　 ░█─── ░█─░█ ░█▄▄▄█ ░█▄▄▀ ─▀▄▄▀ ░█▄▄█ ─░█──");
+        viewSortedAll();
         System.out.print("\nProduct ID: ");
         id = in.nextLine();
 
@@ -307,18 +343,25 @@ public class Main {
 
        if(choice) {
            data.add();//do the add product job
+           System.out.println("Product added successfully!");
+           tunggu(3000);
+           productMenu();
        }else {
            addProducts();//call this function itself 
        }
     }
 
+    //delete a product and all the records by inputting id
     static void deleteProducts() {
         System.out.print("\u000C");//to clear the terminal :) 
         Scanner in = new Scanner(System.in);
         String id;
         boolean choice;
-
-        System.out.println("--------------DELETE PRODUCT---------------");
+        
+        System.out.println("░█▀▀▄ ░█▀▀▀ ░█─── ░█▀▀▀ ▀▀█▀▀ ░█▀▀▀ 　 ░█▀▀█ ░█▀▀█ ░█▀▀▀█ ░█▀▀▄ ░█─░█ ░█▀▀█ ▀▀█▀▀ ");
+        System.out.println("░█─░█ ░█▀▀▀ ░█─── ░█▀▀▀ ─░█── ░█▀▀▀ 　 ░█▄▄█ ░█▄▄▀ ░█──░█ ░█─░█ ░█─░█ ░█─── ─░█── ");
+        System.out.println("░█▄▄▀ ░█▄▄▄ ░█▄▄█ ░█▄▄▄ ─░█── ░█▄▄▄ 　 ░█─── ░█─░█ ░█▄▄▄█ ░█▄▄▀ ─▀▄▄▀ ░█▄▄█ ─░█──");
+        viewSortedAll();
         System.out.print("\nProduct ID: ");
         id = in.nextLine();
 
@@ -328,23 +371,30 @@ public class Main {
 
        if(choice) {
             Product.delete(id); //do the delete process; //do the add product job
+            System.out.println("Product deleted successfully!");
+            tunggu(3000);
+            productMenu();
        }else {
            deleteProducts(); //call this function itself 
        }
     }
 
+    //updating product for every month
     static void updateProducts() {
         System.out.print("\u000C");//to clear the terminal :)
         Scanner in = new Scanner(System.in);
         String id,updatedate;
         int quantity;
 
-        System.out.println("--------------UPDATE PRODUCT STOCKS---------------");
+        System.out.println("░█─░█ ░█▀▀█ ░█▀▀▄ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ 　 ░█▀▀█ ░█▀▀█ ░█▀▀▀█ ░█▀▀▄ ░█─░█ ░█▀▀█ ▀▀█▀▀ ");
+        System.out.println("░█─░█ ░█▄▄█ ░█─░█ ░█▄▄█ ─░█── ░█▀▀▀ 　 ░█▄▄█ ░█▄▄▀ ░█──░█ ░█─░█ ░█─░█ ░█─── ─░█── ");
+        System.out.println("─▀▄▄▀ ░█─── ░█▄▄▀ ░█─░█ ─░█── ░█▄▄▄ 　 ░█─── ░█─░█ ░█▄▄▄█ ░█▄▄▀ ─▀▄▄▀ ░█▄▄█ ─░█───");
+        viewSortedAll();
         System.out.print("\nProduct ID: ");
         id = in.nextLine();
 
         Product [] data = Product.searchPro(id, null);
-        int length = checkLength(data);
+        int length = ItemsInfo.checkLength(data);
         int arrLatest = length-1;
         if(length > 0) {
             System.out.print("Quantity: ");
@@ -357,22 +407,32 @@ public class Main {
 
             Product newData = new Product(data[arrLatest].getCategoryID(),data[arrLatest].getCategoryName(),id,data[arrLatest].getProductName(),quantity,actQuantity,data[arrLatest].getBulkValue(),updatedate);
             newData.update();//add the update stocks
+            System.out.println("Product updated successfully!");
+            tunggu(3000);
+            productMenu();
         } else {
             System.out.println("Product ID not found!");
+            pressAnyKey();
+            productMenu();
         }
     }
 
+    //searching products by inputiing id
     static void searchingProducts() {
         System.out.print("\u000C");
         Scanner in = new Scanner(System.in);
         String id;
-        System.out.println("--------------------SEARCH PRODUCT----------------------");
+
+        System.out.println("░█▀▀▀█ ░█▀▀▀ ─█▀▀█ ░█▀▀█ ░█▀▀█ ░█─░█ 　 ░█▀▀█ ░█▀▀█ ░█▀▀▀█ ░█▀▀▄ ░█─░█ ░█▀▀█ ▀▀█▀▀ ");
+        System.out.println("─▀▀▀▄▄ ░█▀▀▀ ░█▄▄█ ░█▄▄▀ ░█─── ░█▀▀█ 　 ░█▄▄█ ░█▄▄▀ ░█──░█ ░█─░█ ░█─░█ ░█─── ─░█──  ");
+        System.out.println("░█▄▄▄█ ░█▄▄▄ ░█─░█ ░█─░█ ░█▄▄█ ░█─░█ 　 ░█─── ░█─░█ ░█▄▄▄█ ░█▄▄▀ ─▀▄▄▀ ░█▄▄█ ─░█──");
+        viewSortedAll();
         System.out.print("\nEnter Product ID [eg:AX119]: ");
         id = in.nextLine();
 
         Product [] data = Product.searchPro(id, null);
-        // System.out.println(checkLength(data)); //for debugging purpose =>show how many result
-        int length = checkLength(data);
+        // System.out.println(ItemsInfo.checkLength(data)); //for debugging purpose =>show how many result
+        int length = ItemsInfo.checkLength(data);
         if(length > 0) {
             for(int i=0;i<length;i++){
                 if(data[i] == null) {
@@ -384,13 +444,19 @@ public class Main {
         } else {
             System.out.println("Product does not exist!");
         }
+        pressAnyKey();
+        productMenu();
     }
 
     static void searchingCategories() { //search categories by inputting id
         System.out.print("\u000C");
         Scanner in = new Scanner(System.in);
         String id;
-        System.out.println("--------------------SEARCH CATEGORY----------------------");
+
+        System.out.println("░█▀▀▀█ ░█▀▀▀ ─█▀▀█ ░█▀▀█ ░█▀▀█ ░█─░█ 　 ░█▀▀█ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ ░█▀▀█ ░█▀▀▀█ ░█▀▀█ ░█──░█ ");
+        System.out.println("─▀▀▀▄▄ ░█▀▀▀ ░█▄▄█ ░█▄▄▀ ░█─── ░█▀▀█ 　 ░█─── ░█▄▄█ ─░█── ░█▀▀▀ ░█─▄▄ ░█──░█ ░█▄▄▀ ░█▄▄▄█  ");
+        System.out.println("░█▄▄▄█ ░█▄▄▄ ░█─░█ ░█─░█ ░█▄▄█ ░█─░█ 　 ░█▄▄█ ░█─░█ ─░█── ░█▄▄▄ ░█▄▄█ ░█▄▄▄█ ░█─░█ ──░█──");
+        viewSortedAll();
         System.out.print("\nEnter Category ID [eg:AX119]: ");
         id = in.nextLine();
 
@@ -400,531 +466,17 @@ public class Main {
         } else {
             System.out.println("Category not exist!");
         }
+        pressAnyKey();
+        categoryMenu();
     }
 
-
-    //--------------------testing purpose----------------------------------------------------
-
-    static void displayDEBUG(Company data) {
-        System.out.print("\u000C");
-        bannerCompany(data);
-        Scanner in = new Scanner(System.in);
-        System.out.println("\n[1]  DEBUG CALCULATE CATEGORIES");
-        System.out.println("[2]  DEBUG AVERAGE CALCULATION");
-        System.out.println("[3]  DEBUG BULK AMOUNT");
-        System.out.println("[4]  DEBUG HIGHEST PRODUCTION");
-        System.out.println("[5]  DEBUG LOWEST PRODUCT STOCKS");
-        System.out.println("[6]  DEBUG LIST ALL CATEGORIES");
-        System.out.println("[7]  DEBUG LIST ALL PRODUCTS");
-        System.out.println("[8]  DEBUG SORTING CATEGORY");
-        System.out.println("[99] Back to Main Menu");
-
-        int choice;
-        boolean flag = true;
-        while(flag) {
-
-            System.out.print("Enter choice: ");
-            choice = Integer.parseInt(in.nextLine());
-            switch(choice) {
-                case 1:
-                    flag = false;
-                    //add product method here
-                    calculateCategories();
-                    break;
-                case 2:
-                    flag = false;
-                    //delete product method here
-                    calculateAverage();
-                    break;
-                case 3:
-                    flag = false;
-                    //update product method here
-                    bulkList();
-                    break;
-                case 4:
-                    flag = false;
-                    //search product method here
-                    viewHighest();
-                    break;
-                case 5:
-                    flag = false;
-                    //debug method here
-                    viewLowest();
-                    break;
-                case 6:
-                    flag = false;
-                    //debug method here
-                    listAllCategories();
-                    break;
-                case 7:
-                    flag = false;
-                    //debug method here
-                    listAllProducts();
-                    break;
-                case 8:
-                    flag = false;
-                    //debug method here
-                    viewSortedAll();
-                    break;
-                case 99:
-                    flag = false;
-                    mainMenu(data);
-                    break;
-                default:
-                    System.out.println("Invalid choice!");
-            }
-        }
-    }
-
-    static String[][] getAllProducts() {
-
-        String [][]  seen = new String[9999][2]; //use multidimensional array
-        String pid,pname;
-        int j=0;
-        boolean flag = false;
-        try {
-            BufferedReader in = new BufferedReader(new FileReader("product.txt"));
-
-            String data = in.readLine();
-            while(data != null) {
-                StringTokenizer inputs = new StringTokenizer(data, ";");
-
-                pid = inputs.nextToken();
-                pname = inputs.nextToken();
-
-                for(int i=0;i<seen.length;i++) {
-  
-                    if(seen[i][0] == null) {
-                        flag = false;
-                        break;
-                    } else if(seen[i][0].equalsIgnoreCase(pid)){
-                        flag = true;
-                        break;
-                    }
-                }
-                if(flag == false) {
-                    seen[j][0] = pid;
-                    seen[j][1] = pname;
-                    j++;
-                }
-                data = in.readLine();
-            }
-            in.close();
-        }catch (IOException ioe) {
-            System.err.println("Something went wrong!\n" + ioe.getMessage());
-        }
-        return seen;
-    }
-
-    static String[][] getAllProducts(String id) { //overload method receive category id
-
-        String [][]  seen = new String[9999][2]; //use multidimensional array
-        String pid,pname,pcategory;
-        int j=0;
-        int pquantity,pstocks,pbulk;
-        boolean flag = false;
-        try {
-            BufferedReader in = new BufferedReader(new FileReader("product.txt"));
-
-            String data = in.readLine();
-            while(data != null) {
-                StringTokenizer inputs = new StringTokenizer(data, ";");
-
-                pid = inputs.nextToken();
-                pname = inputs.nextToken();
-                pquantity = Integer.parseInt(inputs.nextToken());
-                pstocks = Integer.parseInt(inputs.nextToken());
-                pbulk = Integer.parseInt(inputs.nextToken());
-                pcategory = inputs.nextToken();
-                    
-                if(pcategory.equalsIgnoreCase(id)) {
-                    for(int i=0;i<seen.length;i++) {
-                    
-                        if(seen[i][0] == null) {
-                            flag = false;
-                            break;
-                        } else if(seen[i][0].equalsIgnoreCase(pid)){
-                            flag = true;
-                            break;
-                        }
-                        
-                    }
-                    if(flag == false) {
-                        seen[j][0] = pid;
-                        seen[j][1] = pname;
-                        j++;
-                    }
-                }
-                data = in.readLine();
-            }
-            in.close();
-        }catch (IOException ioe) {
-            System.err.println("Something went wrong!\n" + ioe.getMessage());
-        }
-        return seen;
-    }
-
-    static void listAllProducts() {
-        System.out.print("\u000C");
-        String [][] products = getAllProducts();
-        System.out.println("-------------LISTING OF PRODUCT---------------");
-        System.out.println("\nID\tNAME");
-        System.out.println("==\t==========");
-
-        for(int i=0;i<products.length;i++) {
-
-            if(products[i][0] != null) {
-                System.out.println(products[i][0]+"\t"+products[i][1]);
-            }
-       }
-    }
-
-    static Category [] getAllCategories() {
-        Category [] dat = new Category[9999];
-        String id,name;
-        try {
-            BufferedReader in = new BufferedReader(new FileReader("category.txt"));
-            String data = in.readLine();
-            int i = 0;
-            while(data != null) {
-                StringTokenizer inputs = new StringTokenizer(data, ";");
-
-                id = inputs.nextToken();
-                name = inputs.nextToken();
-                
-                dat[i]= new Category(id,name);
-                data = in.readLine();
-                i++;
-            }
-            in.close();
-        }catch (IOException ioe) {
-            System.err.println("Something went wrong!\n" + ioe);
-        }
-        return dat;
-    }
-
-    static void calculateCategories() {
-        System.out.print("\u000C");
-        Scanner in = new Scanner(System.in);
-        String id;
-        int month,year;//testing purpose
-        System.out.println("--------------------DEBUG CALCULATE CATEGORIES BY MONTH----------------------");
-        System.out.print("\nEnter Category ID [eg:AX119]: ");
-        id = in.nextLine();
-
-        Category data = Category.search(id,null);
-        if(data != null) {
-            System.out.print("Enter month: ");
-            month = Integer.parseInt(in.nextLine());
-            System.out.print("Enter year: ");
-            year = Integer.parseInt(in.nextLine());
-            int stocks = data.calcQuantity(month, year);
-            System.out.println("\n" + data.toString());
-            System.out.println("Month Production: " + stocks);
-            
-        } else {
-            System.out.println("Category not exist!");
-        }
-    }
-
-    static void listAllCategories() {
-        System.out.print("\u000C");
-        Category [] data = getAllCategories();
-        int length = checkLength(data);
-    
-        for(int i=0; i<length; i++) {
-            System.out.println(data[i].toString());
-        }
-    }
-
-    static void calculateAverage() {
-        System.out.print("\u000C");
-        Scanner in = new Scanner(System.in);
-        Category [] data = getAllCategories();
-        int length = checkLength(data);
-        int totalProduction = 0;
-        int month,year;
-        double average;
-        
-        System.out.print("Enter month: ");
-        month = Integer.parseInt(in.nextLine());
-        System.out.print("Enter year: ");
-        year = Integer.parseInt(in.nextLine());
-
-        for(int i=0; i<length; i++) {
-            totalProduction += data[i].calcQuantity(month, year);
-        }
-
-        average = totalProduction/length;
-        System.out.println("Total Categories: " + length);
-        System.out.println("Total Production: " + totalProduction);
-        System.out.println("Average production: " + average);
-    }
-
-    static int calcBulk(String id,int month,int year) {
-        int bulk=0,bulkVal=0,tempStocks=0,mm,yy;
-        String tempDate;
-        Product [] prodResult = Product.searchPro(id, null);
-        int length = checkLength(prodResult);
-        
-        if(month > 0) {
-            for(int i=0;i<length;i++){ //searching for specific month and year
-                tempDate = prodResult[i].getUpdateDate();
-
-                String [] parts = tempDate.split("/",3);
-                mm = Integer.parseInt(parts[1]);
-                yy = Integer.parseInt(parts[2]);
-
-                if(mm == month && yy == year){
-                    tempStocks = prodResult[i].getProductStocks();
-                    bulkVal = prodResult[i].getBulkValue();
-                    break;
-                }
-            }
-        } else if(month == 0) {
-            int yearCount = 0;
-            for(int i=0;i<length;i++){ //searching for specific year
-                tempDate = prodResult[i].getUpdateDate();
-
-                String [] parts = tempDate.split("/",3);
-                yy = Integer.parseInt(parts[2]);
-
-                if(yy == year){
-                    yearCount++;
-                }
-            }
-            if (yearCount == 0) {
-                return 0;
-            } else {
-                tempStocks = prodResult[yearCount-1].getProductStocks();
-                bulkVal = prodResult[yearCount-1].getBulkValue();
-            }
-            
-        }
-        //counting the bulk
-        if(bulkVal == 0) {
-            bulk = 0;
-        }else {
-            while(tempStocks >= bulkVal ) {
-                bulk++;
-                tempStocks -= bulkVal;
-            }
-        }
-        return bulk;
-    }
-
-    static void bulkList() {
-        System.out.print("\u000C");
-        Scanner in = new Scanner(System.in);
-        int month,year;
-        System.out.println("--------------------DEBUG CALCULATE BULK VALUE ALL PRODUCTS----------------------");
-        String [][] prodList = getAllProducts(); //get the product id and name list
-        String id;
-        int bulk;
-
-        System.out.print("Enter month: ");
-        month = Integer.parseInt(in.nextLine());
-
-        System.out.print("Enter year: ");
-        year = Integer.parseInt(in.nextLine());
-
-        for(int i=0;i<prodList.length;i++) {
-
-            if(prodList[i][0] != null) {
-                id = prodList[i][0];
-                bulk = calcBulk(id, month, year);
-                System.out.println(id + " : " + bulk);
-            }
-       }
-    }
-
-    static String [] findLowestStocks(String id) { //receive category id
-        String [][] prodList = getAllProducts();
-        Product [] prodData = null;
-        int month = 0;//change this laterr
-        int year = 2021;//change this laterr
-        int stocks = 0;
-        int lowest = -1;
-        int yearCount = 0;
-        String lowid = null;
-        String tempId = null;
-        String [] lowData = new String [2];
-
-        for(int i=0;i<prodList.length;i++) {
-            
-            if(prodList[i][0] != null) {
-                String pid = prodList[i][0];
-                prodData = Product.searchPro(pid, null);
-                int length = checkLength(prodData);
-
-                for(int j=0;j<length;j++) {
-                    String category = prodData[j].getCategoryID();
-                    String date = prodData[j].getUpdateDate();
-                    String [] parts = date.split("/",3);
-                    int mm = Integer.parseInt(parts[1]);
-                    int yy = Integer.parseInt(parts[2]);
-
-                    if(category.equalsIgnoreCase(id) && year == yy ) {
-                        if (month == 0) {
-                            yearCount++;
-                        } else if(month > 0){
-                            if(month == mm) {
-                                stocks = prodData[j].getProductStocks();
-                                lowid = prodData[j].getProductID();
-                                break;
-                            }
-                        }else {
-                            stocks = 0;
-                            lowid = null;
-                        }
-                    } else {
-                        continue;
-                    }
-                }
-                if(month == 0) {
-                    if(yearCount == 0) {
-                        continue;
-                    } else {
-                        stocks = prodData[yearCount-1].getProductStocks();
-                        tempId = prodData[yearCount-1].getProductID();
-                    } 
-                }
-                
-                //comparing the lowest
-                if(lowest<0) {
-                    lowest = stocks;
-                    lowid = tempId;
-                } else if (stocks <= lowest) {
-                    lowest = stocks;
-                    lowid = tempId;
-                }
-             } else {
-                 continue;
-             }
-             yearCount = 0;
-        }
-        lowData[0] = lowid;
-        lowData[1] = Integer.toString(lowest);
-        return lowData;
-    }
-
-    static void viewLowest() {
-        System.out.print("\u000C");
-        System.out.println("------------------DEBUG CHECK LOWEST STOCKS EACH CATEGORY---------------");
-        Category [] catList = getAllCategories();
-        int length = checkLength(catList);
-
-        for(int i=0;i<length;i++) {
-            String [] data = findLowestStocks(catList[i].getCategoryID());
-            String pname = data[0];
-            int stocks = Integer.parseInt(data[1]);
-
-            if(pname == null) {
-                pname = "NO RECORD";
-            }
-            System.out.println(catList[i].getCategoryName()+":"+ pname + "=" + stocks);
-        }
-    }
-
-    static String [] findHighestProduction(String id) {
-        String [][] prodList = getAllProducts();
-        Product [] prodData = null;
-        int month = 0;//change this laterr
-        int year = 2012;//change this laterr
-        int tempProduction = 0;
-        int lowest = -1;
-        int yearCount = 0;
-        String lowid = null;
-        String tempId = null;
-        String [] lowData = new String [2];
-
-        for(int i=0;i<prodList.length;i++){
-            
-            if(prodList[i][0] != null) {
-                String pid = prodList[i][0];
-                prodData = Product.searchPro(pid, null);
-                int length = checkLength(prodData);
-
-                for(int j=0;j<length;j++) {
-                    String category = prodData[j].getCategoryID();
-                    String date = prodData[j].getUpdateDate();
-                    String [] parts = date.split("/",3);
-                    int mm = Integer.parseInt(parts[1]);
-                    int yy = Integer.parseInt(parts[2]);
-
-                    if(category.equalsIgnoreCase(id) && year == yy) {
-                        if(month == 0) {
-                            tempProduction += prodData[j].getProductQuantity();
-                            tempId = pid;
-                        }else if(month > 0){
-                            if(month == mm) {
-                                System.out.println(tempProduction);
-                                tempProduction = prodData[j].getProductQuantity();
-                                tempId = pid;
-                                break;
-                            }
-                        }
-                    }
-                    if(lowest < 0) {
-                        lowest = tempProduction;
-                        lowid = tempId;
-                    } else if(tempProduction >= lowest) {
-                        lowest = tempProduction;
-                        lowid = tempId;
-                    }
-                }
-            } else {
-                continue;
-            }
-            if(month == 0) {
-                tempProduction = 0;
-            }
-        }
-        lowData[0] = lowid;
-        lowData[1] = Integer.toString(lowest);
-        return lowData;
-    }
-
-    static void viewHighest() {
-        System.out.print("\u000C");
-        System.out.println("------------------DEBUG CHECK HIGHEST PRODUCTION EACH CATEGORY---------------");
-        Category [] catList = getAllCategories();
-        int length = checkLength(catList);
-
-        for(int i=0;i<length;i++) {
-            String [] data = findHighestProduction(catList[i].getCategoryID());
-            String pname = data[0];
-            int stocks = Integer.parseInt(data[1]);
-
-            if(pname == null) {
-                pname = "NO RECORD";
-            }
-            System.out.println(catList[i].getCategoryName()+":"+ pname + "=" + stocks);
-        }
-    }
-
-    static String [] sorting(String [] arr) {
-        String [] sorted = new String[arr.length];
-        String temp;
-
-        for(int i=0;i<arr.length;i++) {
-           
-            for(int j=i+1;j<arr.length;j++) {
-
-                if(arr[i].compareTo(arr[j])>0) {
-                    temp = arr[i];
-                    arr[i] = arr[j];
-                    arr[j] = temp;
-                }
-            } 
-        }
-
-        return arr;
-    }
-
+    //diplaying sorted list
     static void viewSortedAll() {
-        Category [] catList = getAllCategories();
-        int length = checkLength(catList);
+        System.out.println("=========================================");
+        System.out.println("LISTING ALL CATEGORIES AND PRODUCTS");
+        System.out.println("=========================================");
+        Category [] catList = Category.getAllCategories();
+        int length = ItemsInfo.checkLength(catList);
         String [] list = new String[length];
         String [] Catsorted = new String[length];
         String [][] plist = null;
@@ -934,11 +486,11 @@ public class Main {
             list[i] = catList[i].getCategoryID();
         }
 
-        Catsorted = sorting(list);
+        Catsorted = ItemsInfo.sorting(list);
         //display the sorted
         for(int j=0;j<length;j++) {
-            System.out.println("\n"+Catsorted[j] + ":" + Category.search(Catsorted[j], null).getCategoryName());
-            plist = getAllProducts(Catsorted[j]);
+            System.out.println("\nCategory:"+ "[" +Catsorted[j] + "]"+ Category.search(Catsorted[j], null).getCategoryName());
+            plist = Product.getAllProducts(Catsorted[j]);
             if(plist[0][0] == null) {
                 System.out.println("NO RECORD!");
             }
@@ -948,19 +500,68 @@ public class Main {
                 }
             }
         }
+        System.out.println("=========================================");
     }
 
-    //---------------------------------------------------------------------------------------
 
+    
+    //generate and write a report
+    static void testReport(Company compInfo) {
+        System.out.print("\u000C");
+        Category [] catList = Category.getAllCategories();
+        String [][] prodList = Product.getAllProducts();
+        Scanner in = new Scanner(System.in);
 
+        System.out.println("░█▀▀█ ░█▀▀▀ ░█▄─░█ ░█▀▀▀ ░█▀▀█ ─█▀▀█ ▀▀█▀▀ ░█▀▀▀ 　 ░█▀▀█ ░█▀▀▀ ░█▀▀█ ░█▀▀▀█ ░█▀▀█ ▀▀█▀▀ ");
+        System.out.println("░█─▄▄ ░█▀▀▀ ░█░█░█ ░█▀▀▀ ░█▄▄▀ ░█▄▄█ ─░█── ░█▀▀▀ 　 ░█▄▄▀ ░█▀▀▀ ░█▄▄█ ░█──░█ ░█▄▄▀ ─░█── ");
+        System.out.println("░█▄▄█ ░█▄▄▄ ░█──▀█ ░█▄▄▄ ░█─░█ ░█─░█ ─░█── ░█▄▄▄ 　 ░█─░█ ░█▄▄▄ ░█─── ░█▄▄▄█ ░█─░█ ─░█──");
+        int year = 0,choice,month = 0;
+        System.out.println("\n[1] Yearly Report");
+        System.out.println("[2] Monthly Report");
+        System.out.println("[99] Back to Main Menu");
+
+        boolean flag = true;
+        while(flag) {
+            System.out.print("Enter choice: ");
+            choice = Integer.parseInt(in.nextLine());
+
+            if(choice == 1) {
+                System.out.print("Enter year: ");
+                year = Integer.parseInt(in.nextLine());
+                flag = false;
+            } else if(choice == 2){
+                System.out.print("Enter year: ");
+                year = Integer.parseInt(in.nextLine());
+
+                System.out.println("Enter month: ");
+                month = Integer.parseInt(in.nextLine());
+                flag = false;
+            } else if(choice == 99) {
+                mainMenu(compInfo);
+                flag = false;
+            } else {
+                System.out.println("Invalid choice");
+            }
+        }
+        Report reportTest = new Report(compInfo,catList,prodList,year);
+        viewSortedAll();
+        reportTest.generateReportTest(month);
+        reportTest.generate2pdf(month);
+        pressAnyKey();
+        mainMenu(compInfo);
+    }
+
+    //registering a company for fresh start/new user
     static Company registerCompany() {
 
         String companyName,companyPhone,companyAddress,businessNumber;
         Scanner in = new Scanner(System.in);
 
-        System.out.println("--------------------NEW USER COMPANY REGISTRATION----------------------");
+        System.out.println("░█▀▀█ ░█▀▀▀█ ░█▀▄▀█ ░█▀▀█ ─█▀▀█ ░█▄─░█ ░█──░█ 　 ░█▀▀█ ░█▀▀▀ ░█▀▀█ ▀█▀ ░█▀▀▀█ ▀▀█▀▀ ░█▀▀▀ ░█▀▀█ ");
+        System.out.println("░█─── ░█──░█ ░█░█░█ ░█▄▄█ ░█▄▄█ ░█░█░█ ░█▄▄▄█ 　 ░█▄▄▀ ░█▀▀▀ ░█─▄▄ ░█─ ─▀▀▀▄▄ ─░█── ░█▀▀▀ ░█▄▄▀");
+        System.out.println("░█▄▄█ ░█▄▄▄█ ░█──░█ ░█─── ░█─░█ ░█──▀█ ──░█── 　 ░█─░█ ░█▄▄▄ ░█▄▄█ ▄█▄ ░█▄▄▄█ ─░█── ░█▄▄▄ ░█─░█");
         
-        System.out.print("Company Name: ");
+        System.out.print("\nCompany Name: ");
         companyName = in.nextLine();
 
         System.out.print("Company Phone: ");
@@ -982,7 +583,7 @@ public class Main {
             wrt.close();
 
         } catch (IOException ioe) {
-            System.err.println("Something went wrong!");
+            System.err.println("Something went wrong!\n" + ioe.getMessage());
         }
         System.out.print("\u000C");//to clear the terminal :) 
         return compData;
@@ -1021,11 +622,13 @@ public class Main {
                     in.close();
 
                 } else {
+                    System.out.println("NO COMPANY INFO DETECTED!...");
+                    tunggu(3000);
                     compData = registerCompany();
                 }
 
             } catch (IOException ioe) {
-                System.err.print("Something went Wrong!");
+                System.err.print("Something went Wrong!\n" + ioe.getMessage());
             }
 
         } else {
@@ -1039,6 +642,7 @@ public class Main {
 
         //verify the user registered the company or not
         Company companyDetails = verifyCompany();
+        //execute the main menu
         mainMenu(companyDetails);
     }
 }

@@ -176,6 +176,30 @@ public class Category {
         }
     }
 
+    static Category [] getAllCategories() {
+        Category [] dat = new Category[9999];
+        String id,name;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("category.txt"));
+            String data = in.readLine();
+            int i = 0;
+            while(data != null) {
+                StringTokenizer inputs = new StringTokenizer(data, ";");
+
+                id = inputs.nextToken();
+                name = inputs.nextToken();
+                
+                dat[i]= new Category(id,name);
+                data = in.readLine();
+                i++;
+            }
+            in.close();
+        }catch (IOException ioe) {
+            System.err.println("Something went wrong!\n" + ioe);
+        }
+        return dat;
+    }
+
     public int calcQuantity(int month,int year) {
 
         int quantity = 0;
