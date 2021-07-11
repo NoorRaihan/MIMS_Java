@@ -61,7 +61,6 @@ public class Category {
                 System.err.println("Something went wrong!" +ioe);
             }
         } else {
-            System.out.println("executeeee"); //debugggg
             flag = false;
         }
         

@@ -182,11 +182,10 @@ public class Report extends ItemsInfo {
         String [][] prodList = super.getProductList();
         Product [] prodData = null;
         int tempProduction = 0;
-        int lowest = -1;
-        int yearCount = 0;
-        String lowName = null;
+        int highest = -1;
+        String highName = null;
         String tempName = null;
-        String [] lowData = new String [2];
+        String [] highData = new String [2];
 
         for(int i=0;i<prodList.length;i++){
             
@@ -214,24 +213,24 @@ public class Report extends ItemsInfo {
                             }
                         }
                     }
-                    if(lowest < 0) {
-                        lowest = tempProduction;
-                        lowName = tempName;
-                    } else if(tempProduction >= lowest) {
-                        lowest = tempProduction;
-                        lowName = tempName;
-                    }
                 }
-            } else {
+                if(highest < 0) {
+                    highest = tempProduction;
+                    highName = tempName;
+                } else if(tempProduction > highest) {
+                    highest = tempProduction;
+                    highName = tempName;
+                }
+            }else {
                 continue;
             }
             if(month == 0) {
                 tempProduction = 0;
             }
         }
-        lowData[0] = lowName;
-        lowData[1] = Integer.toString(lowest);
-        return lowData;
+        highData[0] = highName;
+        highData[1] = Integer.toString(highest);
+        return highData;
     }
 
     //count bulk for each category

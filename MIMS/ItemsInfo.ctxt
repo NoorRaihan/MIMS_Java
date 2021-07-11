@@ -1,10 +1,19 @@
 #BlueJ class context
 comment0.target=ItemsInfo
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ ItemsInfo\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
 comment1.params=
 comment1.target=ItemsInfo()
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ ItemsInfo\r\n
-comment2.params=y
-comment2.target=int\ sampleMethod(int)
-comment2.text=\r\n\ An\ example\ of\ a\ method\ -\ replace\ this\ comment\ with\ your\ own\r\n\r\n\ @param\ \ y\ \ a\ sample\ parameter\ for\ a\ method\r\n\ @return\ \ \ \ the\ sum\ of\ x\ and\ y\r\n
-numComments=3
+comment2.params=companyInfo\ catList\ prodList
+comment2.target=ItemsInfo(Company,\ Category[],\ java.lang.String[][])
+comment3.params=
+comment3.target=Company\ getCompanyInfo()
+comment4.params=
+comment4.target=Category[]\ getCategoryList()
+comment5.params=
+comment5.target=java.lang.String[][]\ getProductList()
+comment6.params=companyInfo\ catList\ prodList
+comment6.target=void\ setAll(Company,\ Category[],\ java.lang.String[][])
+comment7.params=array
+comment7.target=int\ checkLength(java.lang.Object[])
+comment8.params=arr
+comment8.target=java.lang.String[]\ sorting(java.lang.String[])
+numComments=9
