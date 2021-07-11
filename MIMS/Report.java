@@ -233,7 +233,7 @@ public class Report extends ItemsInfo {
         return highData;
     }
 
-    //count bulk for each category
+    //count bulk for each product
     public int calcBulk(String id,int month) {
         int bulk=0,bulkVal=0,tempStocks=0,mm,yy;
         String tempDate;

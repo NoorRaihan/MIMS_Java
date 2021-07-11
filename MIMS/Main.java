@@ -181,6 +181,7 @@ public class Main {
         return flag;
     }
 
+    //delayed the process
     static void tunggu(int ms) {
         try {
             Thread.sleep(3000);
