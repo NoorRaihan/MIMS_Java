@@ -43,6 +43,8 @@ public class Product extends Category {
     public String getUpdateDate() {return updateDate;}
 
     //process
+
+    //check the product ID already exist or not in the textfile
     static boolean checkExist(String ID) { //check if product exist or not
         boolean flag = false;
 
@@ -79,7 +81,8 @@ public class Product extends Category {
     
     }
 
-    public void add() { //add new Product to the product.txt
+    //add new Product to the product.txt
+    public void add() { 
 
         //check if product exist or not
         boolean exist = checkExist(productID);
@@ -100,6 +103,7 @@ public class Product extends Category {
         }
     }
 
+    //update a existed product stocks
     public void update() {
          //check if product exist or not
          boolean exist = checkExist(productID);
@@ -121,6 +125,7 @@ public class Product extends Category {
          }
     }
 
+    //delete all the product records by its ID
     static void delete(String id) {
         boolean exist = checkExist(id);
         String pid,pname,pcategory,pupdate;
@@ -172,6 +177,7 @@ public class Product extends Category {
 
     }
 
+    //search and return all the specific product records by its own ID
     static Product [] searchPro(String id,String pname) {
 
         Product [] dat = new Product[9999];//array size let it bigger...
@@ -207,6 +213,7 @@ public class Product extends Category {
         return dat;
     }
 
+    //get all products info in textfile and return 2d array of product ID and Name
     static String[][] getAllProducts() {
 
         String [][]  seen = new String[9999][2]; //use multidimensional array
@@ -247,6 +254,7 @@ public class Product extends Category {
         return seen;
     }
 
+    //get all products details and return 2d array of produt id and name with specific category
     static String[][] getAllProducts(String id) { //overload method receive category id
 
         String [][]  seen = new String[9999][2]; //use multidimensional array

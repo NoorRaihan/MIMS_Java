@@ -286,6 +286,8 @@ public class Report extends ItemsInfo {
         return bulk;
     }
 
+
+    //write and view bulk list each products
     public void bulkList(int month) {
         System.out.println("=========================================");
         System.out.println("BULK VALUE FOR ALL PRODUCTS");
@@ -313,6 +315,7 @@ public class Report extends ItemsInfo {
        }
     }
 
+    //write and view HIGHEST PRODUCTION EACH CATEGORY
     public void viewHighest(int month) {
         System.out.println("=========================================");
         System.out.println("HIGHEST PRODUCTION EACH CATEGORY");
@@ -347,6 +350,7 @@ public class Report extends ItemsInfo {
         }
     }
 
+    //write and view LOWEST STOCKS EACH CATEGORY
     public void viewLowest(int month) {
         System.out.println("=========================================");
         System.out.println("LOWEST STOCKS EACH CATEGORY");
@@ -385,6 +389,7 @@ public class Report extends ItemsInfo {
         }
     }
 
+    //write and view SORTED CATEGORIES
     public void viewSorted() {
         System.out.print("\u000C");
         System.out.println("=========================================");
@@ -429,6 +434,7 @@ public class Report extends ItemsInfo {
         System.out.println("=========================================");
     }
 
+    //use for writing a banner to textfile
     static void banner(String title) {
         try {
             PrintWriter wrt = new PrintWriter(new BufferedWriter(new FileWriter("tempreport.txt",true)));
@@ -442,7 +448,7 @@ public class Report extends ItemsInfo {
     }
 
 
-    //testing all the reports calculation algortihm
+    //generate all the reports calculation algortihm
     public void generateReportTest(int month) {
 
         //write sorting
@@ -552,6 +558,7 @@ public class Report extends ItemsInfo {
             content.showText("==========================================");
             content.endText();
 
+            //copy all the things in tempproduct.txt to pdf
             try {
                 File tempfile = new File("tempproduct.txt");
                 BufferedReader in = new BufferedReader(new FileReader("tempproduct.txt"));
@@ -573,6 +580,7 @@ public class Report extends ItemsInfo {
                 System.err.println(ioe.getMessage());
             }
 
+            //copy all the things in tempreport.txt to pdf
             try {
                 File tempfile = new File("tempreport.txt");
                 BufferedReader in = new BufferedReader(new FileReader("tempreport.txt"));
@@ -610,4 +618,7 @@ public class Report extends ItemsInfo {
     
     }
 
+    public String toString() {
+        return super.toString() + "\nReport Year: " + reportYear;
+    }
 }

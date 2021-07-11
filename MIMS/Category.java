@@ -32,6 +32,8 @@ public class Category {
     // public String getUpdateDate() {return updateDate;}
 
     //process
+
+    //checking if the ID already existed or not
     static boolean checkExist(String ID) {
         boolean flag = false;
 
@@ -67,6 +69,7 @@ public class Category {
         return flag;
     }
 
+    //add a Category to textfile
     public void add() {
         boolean exist = checkExist(categoryID);
 
@@ -85,6 +88,7 @@ public class Category {
         }
     }
 
+    //delete Category from textfile by ID
     static void delete(String id) {
         boolean exist = checkExist(id);
         String catID,catName;
@@ -129,6 +133,7 @@ public class Category {
         }
     }
 
+    //edit a category from textfile by ID
     public void update() {
         boolean exist = checkExist(categoryID);
         String catID,catName;
@@ -175,6 +180,7 @@ public class Category {
         }
     }
 
+    //get lisitng of all categories in the textfile
     static Category [] getAllCategories() {
         Category [] dat = new Category[9999];
         String id,name;
@@ -199,6 +205,7 @@ public class Category {
         return dat;
     }
 
+    //calculate total quantity of production of category and return the total
     public int calcQuantity(int month,int year) {
 
         int quantity = 0;
@@ -245,6 +252,7 @@ public class Category {
         return quantity;
     }
 
+    //search the category info by ID
     static Category search(String id, String name) { //to search and return category name
         
         Category dat = null;
