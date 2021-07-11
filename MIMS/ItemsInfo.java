@@ -30,6 +30,7 @@ public class ItemsInfo {
         this.prodList = prodList;
     }
 
+    //checking actual object array length
     static int checkLength(Object [] array) { //this one for checking actual length of array
         int count = 0;
         for(Object myobj : array) { //using for-loop for code optimizinggggg and simple wohoo
@@ -40,6 +41,7 @@ public class ItemsInfo {
         return count;
     }
 
+    //sorting an array in lexicalgraphically
     static String [] sorting(String [] arr) {
         String [] sorted = new String[arr.length];
         String temp;
