@@ -407,10 +407,18 @@ public class Main {
             int actQuantity = quantity + data[arrLatest].getProductStocks();
 
             Product newData = new Product(data[arrLatest].getCategoryID(),data[arrLatest].getCategoryName(),id,data[arrLatest].getProductName(),quantity,actQuantity,data[arrLatest].getBulkValue(),updatedate);
-            newData.update();//add the update stocks
-            System.out.println("Product updated successfully!");
-            tunggu(3000);
-            productMenu();
+
+            System.out.print("Are you confirm [yes/no]: ");
+            boolean choice = choicePicker(in.nextLine());
+            if(choice) {
+                newData.update();//add the update stocks
+                System.out.println("Product updated successfully!");
+                tunggu(3000);
+                productMenu();
+           }else {
+               updateProducts(); //call this function itself 
+           }
+            
         } else {
             System.out.println("Product ID not found!");
             pressAnyKey();
