@@ -81,7 +81,7 @@ public class Category {
 
                 add.println(categoryID + ";" + categoryName);
                 add.close();
-
+                add.flush();
             }catch (IOException ioe) {
                 System.err.println("Something went wrong\n" + ioe);
             }

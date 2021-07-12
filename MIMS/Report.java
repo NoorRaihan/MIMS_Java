@@ -67,6 +67,7 @@ public class Report extends ItemsInfo {
 
                 wrt.println(cname + ":"  + production);
                 wrt.close();
+                wrt.flush();
             }catch(IOException ioe) {
                 System.err.println("Something went wrong!\n" + ioe.getMessage());
             }
@@ -101,6 +102,7 @@ public class Report extends ItemsInfo {
 
             wrt.println("AVERAGE PRODUCTION : " + average);
             wrt.close();
+            wrt.flush();
         }catch(IOException ioe) {
             System.err.println("Something went wrong!\n" + ioe.getMessage());
         }
@@ -308,6 +310,7 @@ public class Report extends ItemsInfo {
 
                     wrt.println(name + " : " + bulk);
                     wrt.close();
+                    wrt.flush();
                 }catch(IOException ioe) {
                     System.err.println("Something went wrong!\n" + ioe.getMessage());
                 }
@@ -344,6 +347,7 @@ public class Report extends ItemsInfo {
                 wrt.println("CATEGORY : " + Category.search(list[i], null).getCategoryName());
                 wrt.println("[PRODUCT] "+pname + " : " + stocks);
                 wrt.close();
+                wrt.flush();
             }catch(IOException ioe) {
                 System.err.println("Something went wrong!\n" + ioe.getMessage());
             }
@@ -383,6 +387,7 @@ public class Report extends ItemsInfo {
                 wrt.println("[PRODUCT] "+pname + " : " + stocks);
                 
                 wrt.close();
+                wrt.flush();
             }catch(IOException ioe) {
                 System.err.println("Something went wrong!\n" + ioe.getMessage());
             }
@@ -428,6 +433,7 @@ public class Report extends ItemsInfo {
                 }
             }
             wrt.close();
+            wrt.flush();
         }catch(IOException ioe) {
             System.err.println("Something went wrong!\n" + ioe.getMessage());
         }
@@ -442,6 +448,7 @@ public class Report extends ItemsInfo {
             wrt.println(title);
             wrt.println("==========================================");
             wrt.close();
+            wrt.flush();
         }catch(IOException ioe) {
             System.err.println("Something went wrong!\n" + ioe.getMessage());
         }
@@ -614,8 +621,6 @@ public class Report extends ItemsInfo {
         }catch(IOException ioe){
             System.err.println(ioe.getMessage());
         }
-
-    
     }
 
     public String toString() {
