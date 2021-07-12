@@ -95,7 +95,7 @@ public class Product extends Category {
 
                 add.println(productID + ";" + productName + ";" + productQuantity + ";" + stocks +";"+ bulkValue + ";" +super.getCategoryID() + ";" + updateDate);
                 add.close();
-
+                add.flush();
             } catch (IOException ioe) {
                 System.err.println("Something went wrong!\n" + ioe);
             }
@@ -116,6 +116,7 @@ public class Product extends Category {
  
                  add.println(productID + ";" + productName + ";" + productQuantity + ";" + stocks + ";" + bulkValue + ";" +super.getCategoryID() + ";" + updateDate);
                  add.close();
+                 add.flush();
                  System.out.println("Product stock update successfully!");
  
              } catch (IOException ioe) {

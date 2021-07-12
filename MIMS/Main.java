@@ -411,8 +411,7 @@ public class Main {
             System.out.print("Are you confirm [yes/no]: ");
             boolean choice = choicePicker(in.nextLine());
             if(choice) {
-                newData.update();//add the update stocks
-                System.out.println("Product updated successfully!");
+                newData.update();//add the update stockS
                 tunggu(3000);
                 productMenu();
            }else {
@@ -590,6 +589,7 @@ public class Main {
             
             wrt.println(compData.getCompanyName()+";"+compData.getCompanyPhone()+";"+compData.getCompanyAddress()+";"+compData.getBusinessNumber());
             wrt.close();
+            wrt.flush();
 
         } catch (IOException ioe) {
             System.err.println("Something went wrong!\n" + ioe.getMessage());
