@@ -1,3 +1,6 @@
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 public class ItemsInfo {
 
     private Company companyInfo;
@@ -61,5 +64,7 @@ public class ItemsInfo {
         return arr;
     }
 
-    
+    public String toString() {
+        return "\n" + companyInfo.toString() + "\nCategory: " + Arrays.toString(catList) + "\nProducts: " + Arrays.toString(prodList);
+    }
 }
