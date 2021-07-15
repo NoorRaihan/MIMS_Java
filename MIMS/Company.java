@@ -17,7 +17,7 @@ public class Company {
     public Company(String companyName, String companyPhone, String companyAddress, String businessNumber) {
         
         this.companyName = companyName;
-        this.companyPhone = companyAddress;
+        this.companyPhone = companyPhone;
         this.companyAddress = companyAddress;
         this.businessNumber = businessNumber;
 
@@ -37,5 +37,9 @@ public class Company {
     public String getCompanyPhone() {return companyPhone;}
     public String getCompanyAddress() {return companyAddress;}
     public String getBusinessNumber() {return businessNumber;}
+
+    public String toString() {
+        return "\nCompany Name: " + companyName + "\nCompany Phone: " + companyPhone + "\nCompany Address: " + companyAddress + "\nBusiness Number: " + businessNumber;
+    }
 
 }
