@@ -184,7 +184,7 @@ public class Main {
     //delayed the process
     static void tunggu(int ms) {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(ms);
         }catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
        }
