@@ -117,7 +117,7 @@ public class Report extends ItemsInfo {
         int yearCount = 0;
         String lowName = null;
         String tempName= null;
-        String [] lowData = new String [3];
+        String [] lowData = new String [2];
 
         for(int i=0;i<prodList.length;i++) {
             
