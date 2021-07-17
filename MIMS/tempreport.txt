@@ -1,0 +1,44 @@
+==========================================
+TOTAL PRODUCTION EACH CATEGORY
+==========================================
+ALMARI:20
+PINTU:20
+KERUSI:20
+MEJA:55
+==========================================
+AVERAGE WHOLE PRODUCTION
+==========================================
+AVERAGE PRODUCTION : 28.75
+==========================================
+BULK VALUE EVERY PRODUCTS
+==========================================
+ALMARI BESAR (JATI) : 5
+ALMARI KECIL (JATI) : 5
+PINTU KLASIK (JATI) : 2
+PINTU MODEN (JATI) : 2
+KERUSI BANGKU (JATI) : 2
+KERUSI BAR (JATI) : 2
+MEJA PANJANG (JATI) : 10
+MEJA PETAK (JATI) : 8
+==========================================
+HIGHEST PRODCUTION EACH CATEGORY
+==========================================
+CATEGORY : ALMARI
+[PRODUCT] ALMARI BESAR (JATI) : 10
+CATEGORY : PINTU
+[PRODUCT] PINTU KLASIK (JATI) : 10
+CATEGORY : KERUSI
+[PRODUCT] KERUSI BANGKU (JATI) : 10
+CATEGORY : MEJA
+[PRODUCT] MEJA PETAK (JATI) : 35
+==========================================
+LOWEST STOCKS EACH CATEGORY
+==========================================
+CATEGORY : ALMARI
+[PRODUCT] ALMARI KECIL (JATI) : 10
+CATEGORY : PINTU
+[PRODUCT] PINTU MODEN (JATI) : 10
+CATEGORY : KERUSI
+[PRODUCT] KERUSI BAR (JATI) : 10
+CATEGORY : MEJA
+[PRODUCT] MEJA PANJANG (JATI) : 20
